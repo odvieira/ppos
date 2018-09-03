@@ -1,0 +1,28 @@
+# depslib dependency file v1.0
+1536010967 source:/home/todos/alunos/ct/a1366424/ppOs/p02/pingpong-tasks1.c
+	<stdio.h>
+	<stdlib.h>
+	"pingpong.h"
+
+1536008672 /home/todos/alunos/ct/a1366424/ppOs/p02/pingpong.h
+	"datatypes.h"
+	<stdio.h>
+	<stdlib.h>
+
+1536009477 /home/todos/alunos/ct/a1366424/ppOs/p02/datatypes.h
+	<ucontext.h>
+	"../p00/src/queue.h"
+
+1536003624 source:/home/todos/alunos/ct/a1366424/ppOs/p02/datatypes.c
+	"datatypes.h"
+
+1536010189 source:/home/todos/alunos/ct/a1366424/ppOs/p00/src/queue.c
+	"queue.h"
+
+1536002108 /home/todos/alunos/ct/a1366424/ppOs/p00/src/queue.h
+	<stdlib.h>
+	<stdio.h>
+
+1536011962 source:/home/todos/alunos/ct/a1366424/ppOs/p02/pingpong.c
+	"pingpong.h"
+

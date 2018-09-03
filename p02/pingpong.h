@@ -11,6 +11,10 @@
 
 #include "datatypes.h"		// estruturas de dados necessárias
 
+#include <stdio.h>
+#include <stdlib.h>
+
+
 // funções gerais ==============================================================
 
 // Inicializa o sistema operacional; deve ser chamada no inicio do main()

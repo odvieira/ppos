@@ -7,11 +7,21 @@
 #ifndef __DATATYPES__
 #define __DATATYPES__
 
+#define STACKSIZE 32768
+
+#include <ucontext.h>
+
+#include "../p00/src/queue.h"
+
+queue_t *taskList;
+
 // Estrutura que define uma tarefa
 typedef struct task_t
 {
-  // preencher quando necessário
-} task_t ;
+    struct task_t *prev, *next; // para usar com a biblioteca de filas (cast)
+    int id; // ID da tarefa
+    ucontext_t context;
+} task_t;
 
 // estrutura que define um semáforo
 typedef struct
