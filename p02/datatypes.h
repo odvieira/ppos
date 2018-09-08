@@ -13,7 +13,7 @@
 
 #include "../p00/src/queue.h"
 
-queue_t *taskList;
+queue_t *task_list;
 
 // Estrutura que define uma tarefa
 typedef struct task_t

@@ -37,19 +37,28 @@ void BodyPong (void * arg)
    task_exit (0) ;
 }
 
+void task_print(task_t* task)
+{
+	printf("%d", task->id);
+	return;
+}
+
 int main (int argc, char *argv[])
 {
    printf ("Main INICIO\n");
 
    pingpong_init () ;
 
-   task_create (&Ping, BodyPing, "    Ping") ;
-   task_create (&Pong, BodyPong, "        Pong") ;
+   task_create (&Ping, BodyPing, "    Ping");
+   queue_print("Task List IDs:", task_list, (void*)task_print);
+   task_create (&Pong, BodyPong, "        Pong");
+   queue_print("Task List IDs:", task_list, (void*)task_print);
+
 
    task_switch (&Ping) ;
    task_switch (&Pong) ;
 
    printf ("Main FIM\n");
 
-   exit (0);
+   task_exit(0);
 }
