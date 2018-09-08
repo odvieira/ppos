@@ -17,9 +17,14 @@
 	<stdlib.h>
 	<stdio.h>
 
-1536364375 source:/home/dvieira/ppos/p02/pingpong.c
+1536372941 source:/home/dvieira/ppos/p02/pingpong.c
 	"pingpong.h"
 
 1536347016 source:/home/dvieira/ppos/p00/src/queue.c
 	"queue.h"
+
+1536372766 source:/home/dvieira/ppos/p02/pingpong-tasks2.c
+	<stdio.h>
+	<stdlib.h>
+	"pingpong.h"
 

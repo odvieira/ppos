@@ -7,9 +7,15 @@
 #warning Este codigo foi planejado para ambientes UNIX (LInux, *BSD, MacOS). A compilacao e execucao em outros ambientes e responsabilidade do usuario.
 #endif
 
-#define MAXTASK 1000
+#define MAXTASK 10
 
 task_t task[MAXTASK+1] ;
+
+void task_print(task_t* task)
+{
+	printf("%d", task->id);
+	return;
+}
 
 void BodyTask (void * arg)
 {
@@ -21,6 +27,7 @@ void BodyTask (void * arg)
    next = (task_id() < MAXTASK) ? task_id() + 1 : 1 ;
    task_switch (&task[next]);
 
+   queue_print("TID: ", task_list,(void*)task_print);
    printf ("Encerrei tarefa %5d\n", task_id()) ;
 
    task_exit (0) ;

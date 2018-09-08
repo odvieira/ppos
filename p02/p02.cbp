@@ -36,7 +36,7 @@
 		</Unit>
 		<Unit filename="../p00/src/queue.h" />
 		<Unit filename="datatypes.h" />
-		<Unit filename="pingpong-tasks1.c">
+		<Unit filename="pingpong-tasks2.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="pingpong.c">
