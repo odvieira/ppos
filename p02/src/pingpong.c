@@ -15,8 +15,25 @@ void task_print(task_t* task) // Private Function used to display info when verb
 
 void pingpong_init ()
 {
+    task* dispatcher;
+    task_create(dispatcher, (void*)dispatcher_body, (void*)0)
     setvbuf(stdout, 0, _IONBF, 0);
     return;
+}
+
+void dispatcher_body() // dispatcher é uma tarefa
+{
+    while (running_tasks > 0) // <<<<<<<<<< Conferir se faz sentido
+    {
+        next = scheduler() ; // scheduler é uma função
+        if (next)
+        {
+            // ações antes de lançar a tarefa "next", se houverem
+            task_switch (next) ; // transfere controle para a tarefa "next"
+            // ações após retornar da tarefa "next", se houverem
+        }
+    }
+    task_exit(0) ; // encerra a tarefa dispatcher
 }
 
 int task_create (task_t *n_task, void (*start_func)(void *), void *arg)
