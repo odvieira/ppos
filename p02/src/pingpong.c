@@ -7,23 +7,18 @@ unsigned int current_task_id = MAIN_ID, // Identification of the task that is be
              running_tasks = 1, // Number of running tasks in a moment
              verbose = false;	// Display info about task_switch() and task_exit() on stdout
 
-void task_print(task_t* task) // Private Function used to display info when verbose is true
+task_t dispatcher,
+       main_task;
+
+static void task_print(task_t* task) // Private Function used to display info when verbose is true
 {
     printf("%d", task->id);
     return;
 }
 
-void pingpong_init ()
+static void dispatcher_body() // dispatcher é uma tarefa
 {
-    task* dispatcher;
-    task_create(dispatcher, (void*)dispatcher_body, (void*)0)
-    setvbuf(stdout, 0, _IONBF, 0);
-    return;
-}
-
-void dispatcher_body() // dispatcher é uma tarefa
-{
-    while (running_tasks > 0) // <<<<<<<<<< Conferir se faz sentido
+    /*while (running_tasks > 0) // <<<<<<<<<< Conferir se faz sentido
     {
         next = scheduler() ; // scheduler é uma função
         if (next)
@@ -33,24 +28,44 @@ void dispatcher_body() // dispatcher é uma tarefa
             // ações após retornar da tarefa "next", se houverem
         }
     }
-    task_exit(0) ; // encerra a tarefa dispatcher
+    task_exit(0) ; // encerra a tarefa dispatcher*/
+}
+
+void pingpong_init ()
+{
+    setvbuf(stdout, 0, _IONBF, 0);
+
+    task_list = NULL;
+
+    main_task.context = (ucontext_t*) malloc(sizeof(ucontext_t));
+
+    if(getcontext(main_task.context) < 0) // If fail throw the error
+        return ;
+
+    main_task.id = MAIN_ID; // main id is always zero
+    main_task.label = (char*) malloc(sizeof(char)*TASK_LABEL);
+    main_task.label = "main\0";
+
+    // Appends
+    main_task.next = main_task.prev = NULL;
+    dispatcher.next = dispatcher.prev = NULL;
+    queue_append(&task_list, (queue_t*)&main_task); // Append as head
+
+    if(verbose)
+        printf("Main criada\n");
+
+    return;
+}
+
+void task_yield ()
+{
+    //task_switch(dispatcher);
 }
 
 int task_create (task_t *n_task, void (*start_func)(void *), void *arg)
 {
-    if(queue_size(task_list) == 0) // The first task should be connected to main, which should be the list's head
-    {
-        task_t *main_task = (task_t*) malloc(sizeof(task_t));
-
-        main_task->context = (ucontext_t*) malloc(sizeof(ucontext_t));
-
-        if(getcontext(main_task->context) < 0) // If fail throw the error
-            return -1;
-
-        main_task->id = MAIN_ID; // main id is always zero
-
-        queue_append(&task_list, (queue_t*)main_task); // Append as head
-    }
+    n_task->label = (char*) malloc(sizeof(char)*TASK_LABEL);
+    sprintf(n_task->label, "task_%d", running_tasks);
 
     n_task->context = (ucontext_t*) malloc(sizeof(ucontext_t));
 
@@ -65,7 +80,15 @@ int task_create (task_t *n_task, void (*start_func)(void *), void *arg)
 
     makecontext(n_task->context, (void*)start_func, 1, arg);
 
+    n_task->next = n_task->prev = NULL;
     queue_append(&task_list, (queue_t*)n_task);
+
+    if(verbose)
+    {
+        printf("Criando task %s\n", n_task->label);
+        queue_print("[task_create()]\tTID: ", task_list, (void*)task_print);
+    }
+
     running_tasks++;
 
     return n_task->id;
@@ -97,10 +120,15 @@ void task_exit (int exitCode)
         printf("Erro [task_exit() #2]: Tarefa não encontrada\n");
 
     if(verbose)
-        queue_print("TID: ", task_list,(void*)task_print);
+        queue_print("[task_exit()]\tTID: ", task_list,(void*)task_print);
 
-    if(task_switch((task_t*)task_list) < 0) // A cabeça da lista de tarefas sempre é a main()
-        printf("Erro [task_exit() #1]: Não é possível voltar para main()\n");
+    if(!task_list || task_switch((task_t*)task_list) < 0) // A cabeça da lista de tarefas sempre é a main()
+    {
+        if(verbose)
+            printf("[task_exit() #1]: Não é possível voltar para main()\n");
+
+        printf("Finalizando o Sistema\n");
+    }
 
     return;
 }
@@ -128,8 +156,13 @@ int task_switch (task_t *n_task)
         return 0;
     }
 
-    current_task_id = n_task->id;	//Caso o switch tenha sido invocado por uma tarefa já encerrada [task_exit()]
-    setcontext(n_task->context);
+    if(n_task)
+    {
+        current_task_id = n_task->id;	//Caso o switch tenha sido invocado por uma tarefa já encerrada [task_exit()]
+        setcontext(n_task->context); // cabeça da lista é sempre a main
+    }
+    else
+        return -1;
 
     return 0;
 }

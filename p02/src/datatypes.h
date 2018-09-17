@@ -8,6 +8,7 @@
 #define __DATATYPES__
 
 #define STACKSIZE 32768
+#define TASK_LABEL 12
 
 #include <ucontext.h>
 
@@ -18,7 +19,9 @@ queue_t *task_list;
 // Estrutura que define uma tarefa
 typedef struct task_t
 {
-    struct task_t *prev, *next; // para usar com a biblioteca de filas (cast)
+    struct task_t *prev;
+    struct task_t *next; // para usar com a biblioteca de filas (cast)
+    char *label;
     int id; // ID da tarefa
     ucontext_t *context;
 } task_t;
