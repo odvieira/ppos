@@ -2,9 +2,12 @@
 
 // variaveis de ambiente
 #define MAIN_ID 0
+#define END_OF_OS_TASK 2
 
 unsigned int current_task_id = MAIN_ID, // Identification of the task that is being executed
-             running_tasks = 1, // Number of running tasks in a moment
+             running_tasks = 0, // Number of running tasks in a moment
+             next_id = MAIN_ID,
+             created_tasks = 0,
              verbose = false;	// Display info about task_switch() and task_exit() on stdout
 
 task_t dispatcher,
@@ -16,17 +19,33 @@ static void task_print(task_t* task) // Private Function used to display info wh
     return;
 }
 
+static int scheduler()
+{
+    int id = MAIN_ID;
+
+    // SRC
+
+    return id;
+}
+
 static void dispatcher_body() // dispatcher é uma tarefa
 {
+    task_t *next;
+    int next_id = MAIN_ID;
+
     while (running_tasks > 0) // <<<<<<<<<< Conferir se faz sentido
     {
-        next = scheduler() ; // scheduler é uma função
+        next_id = scheduler() ; // scheduler é uma função
+
+        for(next = (task_t*)task_list; (queue_t*)(next->next) != task_list && next_id != next->id; next = next->next) {};
+
+        if(next_id != next->id)
+            printf("Erro [dispatcher] #1: Scheduler retornou um id invalido");
+
         if (next)
-        {
-            // ações antes de lançar a tarefa "next", se houverem
-            task_switch (next) ; // transfere controle para a tarefa "next"
-            // ações após retornar da tarefa "next", se houverem
-        }
+            task_switch (next); // transfere controle para a tarefa "next"
+        else
+            printf("Erro [dispatcher] #2: task invalida");
     }
     task_exit(0) ; // encerra a tarefa dispatcher*/
 }
@@ -37,19 +56,24 @@ void pingpong_init ()
 
     task_list = NULL;
 
+    // Inicializando tasks do S.O
+
+        // MAIN
     main_task.context = (ucontext_t*) malloc(sizeof(ucontext_t));
 
     if(getcontext(main_task.context) < 0) // If fail throw the error
         return ;
 
     main_task.id = MAIN_ID; // main id is always zero
-    main_task.label = (char*) malloc(sizeof(char)*TASK_LABEL);
-    main_task.label = "main\0";
-
-    // Appends
     main_task.next = main_task.prev = NULL;
-    dispatcher.next = dispatcher.prev = NULL;
     queue_append(&task_list, (queue_t*)&main_task); // Append as head
+    running_tasks++;
+
+        // DISPATCHER
+    dispatcher.id = ++created_tasks;
+    dispatcher.next = dispatcher.prev = NULL;
+    queue_append(&task_list, (queue_t*)&dispatcher);
+    running_tasks++;
 
     if(verbose)
         printf("Main criada\n");
@@ -59,20 +83,17 @@ void pingpong_init ()
 
 void task_yield ()
 {
-    //task_switch(dispatcher);
+    task_switch(&dispatcher);
 }
 
 int task_create (task_t *n_task, void (*start_func)(void *), void *arg)
 {
-    n_task->label = (char*) malloc(sizeof(char)*TASK_LABEL);
-    sprintf(n_task->label, "task_%d", running_tasks);
-
     n_task->context = (ucontext_t*) malloc(sizeof(ucontext_t));
 
     if(getcontext(n_task->context) < 0) // If fail throw the error
         return -1;
 
-    n_task->id = running_tasks;	// The task id is the number of running tasks before the new one was created
+    n_task->id = ++created_tasks;	// The task id is the number of running tasks before the new one was created
     n_task->context->uc_stack.ss_sp = (char*) malloc(STACKSIZE);
     n_task->context->uc_stack.ss_size = STACKSIZE;
     n_task->context->uc_stack.ss_flags = 0;
@@ -84,10 +105,7 @@ int task_create (task_t *n_task, void (*start_func)(void *), void *arg)
     queue_append(&task_list, (queue_t*)n_task);
 
     if(verbose)
-    {
-        printf("Criando task %s\n", n_task->label);
         queue_print("[task_create()]\tTID: ", task_list, (void*)task_print);
-    }
 
     running_tasks++;
 

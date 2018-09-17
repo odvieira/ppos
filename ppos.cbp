@@ -31,6 +31,18 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="lib/datatypes.h" />
+		<Unit filename="lib/pingpong.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lib/pingpong.h" />
+		<Unit filename="lib/queue.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="lib/queue.h" />
+		<Unit filename="p03/src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Extensions>
 			<code_completion />
 			<envvars />
