@@ -12,7 +12,7 @@
 
 #include <ucontext.h>
 
-#include "../../lib/queue.h"
+#include "../lib/queue.h"
 
 queue_t *task_list;
 
