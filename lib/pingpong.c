@@ -7,7 +7,7 @@ unsigned int current_task_id = MAIN_ID, // Identification of the task that is be
              running_tasks = 0, // Number of running tasks in a moment
              created_tasks = 0,
              created_users = 0,
-             verbose = true;	// Display info about task_switch() and task_exit() on stdout
+             verbose = false;	// Display info about task_switch() and task_exit() on stdout
 
 static user_t root, common_user;
 
@@ -20,19 +20,31 @@ static void task_print(task_t* task) // Private Function used to display info wh
     return;
 }
 
-static int scheduler(queue_t *aux_task_list)
+static int scheduler(task_t *aux_task_list)
 {
     unsigned int id = MAIN_ID;
     short int p_aux = 32767;
-    task_t *aux_task = (task_t*)aux_task_list, *aux_ptr;
+    task_t *aux_task = aux_task_list, *aux_ptr;
 
-    while((queue_t*)(aux_task->next) != aux_task_list)
+    if(verbose)
+    {
+        printf("Scheduler Iniciado\n");
+        queue_print("TIDs in Scheduler: ", (queue_t*)aux_task_list, (void*)task_print);
+    }
+
+
+    while(aux_task->next->id != aux_task_list->id)
+    {
         if(aux_task->priority < p_aux)
         {
             p_aux = aux_task->priority;
             id = aux_task->id;
             aux_ptr = aux_task;
+            aux_task = aux_task->next;
         }
+        else
+            aux_task = aux_task->next;
+    }
 
     if(aux_task->priority < p_aux)
     {
@@ -44,25 +56,36 @@ static int scheduler(queue_t *aux_task_list)
     aux_ptr->priority = aux_ptr->priority + 1;
     aux_ptr = NULL;
 
+    if(verbose)
+        printf("Scheduler Finalizado\n");
+
     return id;
 }
 
 static void dispatcher_body() // dispatcher é uma tarefa
 {
     int next_id = MAIN_ID;
-    task_t *aux_task = (task_t*)(common_user.task_list);
+    task_t *aux_task;
 
     while (queue_size(common_user.task_list)) //
     {
-        next_id = scheduler((task_t*)common_user.task_list) ; // scheduler é uma função
+        aux_task = (task_t*)(common_user.task_list);
+        next_id = scheduler((task_t*)common_user.task_list); // scheduler é uma função
 
-        while((queue_t*)(aux_task->next) != common_user.task_list && next_id != aux_task->id)
+        if(verbose)
+            printf("next_id obtido\n");
+
+        while(aux_task->next->id != ((task_t*)(common_user.task_list))->id && next_id != aux_task->id)
             aux_task = aux_task->next;
 
         if(next_id != aux_task->id)
-            printf("Erro [dispatcher] #1: Scheduler retornou um id invalido");
+        {
+            printf("Erro [dispatcher] #1: Scheduler retornou um id invalido\n");
+        }
         else
+        {
             task_switch(aux_task); // transfere controle para a tarefa "aux_task"
+        }
     }
 
     task_exit(0) ; // encerra a tarefa dispatcher*/
@@ -84,7 +107,7 @@ static void task_change_owner(task_t* task, user_t* user)
         task->owner = user;
     }
     else
-        printf("Erro[task_cjange_owner] #2: task nao encontrada\n");
+        printf("Erro[task_change_owner] #2: task nao encontrada\n");
 
     return;
 }
@@ -134,9 +157,13 @@ static int is_root_task(int task_id)
         aux_task = aux_task->next;
 
     if(aux_task->id != task_id)
+    {
         return 0;
+    }
     else
+    {
         return 1;
+    }
 }
 
 void pingpong_init ()
@@ -212,9 +239,13 @@ void task_exit (int exitCode)
     user_t *aux_user;
 
     if(is_root_task(task_id()))
+    {
         aux_user = &root;
+    }
     else
+    {
         aux_user = &common_user;
+    }
 
     task_t* aux_task;
 
@@ -237,7 +268,9 @@ void task_exit (int exitCode)
         running_tasks--;
     }
     else if(aux_task)
+    {
         printf("Erro [task_exit() #2]: Tarefa não encontrada\n");
+    }
 
     if(verbose)
     {
@@ -261,9 +294,13 @@ int task_switch (task_t *n_task)
     user_t *aux_user;
 
     if(is_root_task(task_id()))
+    {
         aux_user = &root;
+    }
     else
+    {
         aux_user = &common_user;
+    }
 
 
     task_t *aux;
