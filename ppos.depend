@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1537304452 source:/home/dvieira/ppos/lib/pingpong.c
+	"pingpong.h"
+
+1537295996 /home/dvieira/ppos/lib/pingpong.h
+	"datatypes.h"
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+
+1537305666 /home/dvieira/ppos/lib/datatypes.h
+	<ucontext.h>
+	"../lib/queue.h"
+
+1537304213 /home/dvieira/ppos/lib/queue.h
+	<stdlib.h>
+	<stdio.h>
+
+1537295996 source:/home/dvieira/ppos/lib/queue.c
+	"queue.h"
+
+1537304213 source:/home/dvieira/ppos/p03/src/main.c
+	<stdio.h>
+	<stdlib.h>
+	"../../lib/pingpong.h"
+

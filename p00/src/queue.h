@@ -19,13 +19,14 @@
 
 typedef struct queue_t
 {
-    struct queue_t *prev ;  // aponta para o elemento anterior na fila
-    struct queue_t *next ;  // aponta para o elemento seguinte na fila
+    struct queue_t *prev, *next;  // aponta para o elemento anterior e seguinte na fila respectivamente
 } queue_t ;
+// aponta para o elemento anterior na fila
 
 //------------------------------------------------------------------------------
 // Insere um elemento no final da fila.
-// Condicoes a verificar, gerando msgs de erro:
+// Condicoes a verificar, gerando msgs de erro:  // aponta para o elemento anterior na fila
+
 // - a fila deve existir
 // - o elemento deve existir
 // - o elemento nao deve estar em outra fila
