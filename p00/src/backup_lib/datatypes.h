@@ -8,22 +8,27 @@
 #define __DATATYPES__
 
 #define STACKSIZE 32768
-#define TASK_LABEL 12
+#define USER_NAME_SIZE 15
 
 #include <ucontext.h>
 
-#include "../lib/queue.h"
+#include "queue.h"
 
-queue_t *task_list;
+typedef struct user_t
+{
+    unsigned int id;
+    char name[USER_NAME_SIZE];
+    queue_t *task_list;
+} user_t;
 
 // Estrutura que define uma tarefa
 typedef struct task_t
 {
-    struct task_t *prev;
-    struct task_t *next; // para usar com a biblioteca de filas (cast)
-    char *label;
+    struct task_t *prev, *next; // para usar com a biblioteca de filas (cast)
     int id; // ID da tarefa
     ucontext_t *context;
+    user_t *owner;
+    int priority;
 } task_t;
 
 // estrutura que define um semáforo

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pingpong.h"
+#include "../../lib/pingpong.h"
 
 // operating system check
 #if defined(_WIN32) || (!defined(__unix__) && !defined(__unix) && (!defined(__APPLE__) || !defined(__MACH__)))
@@ -43,14 +43,13 @@ int main (int argc, char *argv[])
 
    pingpong_init () ;
 
-   task_create (&Ping, BodyPing, "    Ping");
-   task_create (&Pong, BodyPong, "        Pong");
-
+   task_create (&Ping, BodyPing, "    Ping") ;
+   task_create (&Pong, BodyPong, "        Pong") ;
 
    task_switch (&Ping) ;
    task_switch (&Pong) ;
 
    printf ("Main FIM\n");
 
-   task_exit(0);
+   exit (0);
 }
