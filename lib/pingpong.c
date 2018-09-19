@@ -279,6 +279,7 @@ void task_exit (int exitCode)
         aux_task = (task_t*) queue_remove(&(aux_user->task_list), (queue_t*)aux_task);
         free(aux_task->next);
         free(aux_task->prev);
+        aux_task = NULL;
         running_tasks--;
     }
     else if(aux_task)

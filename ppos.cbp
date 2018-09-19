@@ -62,8 +62,6 @@
 		</Unit>
 		<Unit filename="p03/src/main.c">
 			<Option compilerVar="CC" />
-			<Option compile="0" />
-			<Option link="0" />
 		</Unit>
 		<Extensions>
 			<code_completion />

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1537334096 source:/home/dvieira/ppos/lib/pingpong.c
+1537338666 source:/home/dvieira/ppos/lib/pingpong.c
 	"pingpong.h"
 
 1537315092 /home/dvieira/ppos/lib/pingpong.h
@@ -20,7 +20,7 @@
 1537315092 source:/home/dvieira/ppos/lib/queue.c
 	"queue.h"
 
-1537304213 source:/home/dvieira/ppos/p03/src/main.c
+1537315092 source:/home/dvieira/ppos/p03/src/main.c
 	<stdio.h>
 	<stdlib.h>
 	"../../lib/pingpong.h"
