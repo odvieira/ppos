@@ -15,8 +15,6 @@ static user_t root, common_user;
 static task_t dispatcher,
        main_task;
 
-static queue_t *suspended_tasks;
-
 static void task_print(task_t* task) // Private Function used to display info when verbose is true
 {
     printf("%d", task->id);
@@ -26,10 +24,10 @@ static void task_print(task_t* task) // Private Function used to display info wh
 static int scheduler(task_t *aux_task_list)
 {
     unsigned int id = MAIN_ID;
-    short int p_aux = 0;
+    short int p_aux = 32767;
     task_t *aux_task = aux_task_list, *aux_ptr = NULL;
 
-    if(verbose == true)
+    if(verbose)
     {
         printf("Scheduler Iniciado\n");
         queue_print("TIDs in Scheduler: ", (queue_t*)aux_task_list, (void*)task_print);
@@ -38,7 +36,7 @@ static int scheduler(task_t *aux_task_list)
 
     while(aux_task->next->id != aux_task_list->id)
     {
-        if(aux_task->priority > p_aux)
+        if(aux_task->priority < p_aux)
         {
             p_aux = aux_task->priority;
             id = aux_task->id;
@@ -49,7 +47,7 @@ static int scheduler(task_t *aux_task_list)
             aux_task = aux_task->next;
     }
 
-    if(aux_task->priority > p_aux)
+    if(aux_task->priority < p_aux)
     {
         p_aux = aux_task->priority;
         id = aux_task->id;
@@ -59,7 +57,7 @@ static int scheduler(task_t *aux_task_list)
     aux_ptr->priority = aux_ptr->priority + 1;
     aux_ptr = NULL;
 
-    if(verbose == true)
+    if(verbose)
         printf("Scheduler Finalizado\n");
 
     return id;
@@ -75,7 +73,7 @@ static void dispatcher_body() // dispatcher é uma tarefa
         aux_task = (task_t*)(common_user.task_list);
         next_id = scheduler((task_t*)common_user.task_list); // scheduler é uma função
 
-        if(verbose == true)
+        if(verbose)
             printf("next_id obtido\n");
 
         while(aux_task->next->id != ((task_t*)(common_user.task_list))->id && next_id != aux_task->id)
@@ -148,29 +146,8 @@ static int main_task_create()
     running_tasks++;
     main_task.owner = &root;
     main_task.priority = 0;
-    main_task.status = READY;
 
     return 0;
-}
-
-static boolean_t this_task_is_suspended(int task_id)
-{
-    task_t *aux_task;
-
-    aux_task = (task_t*)suspended_tasks;
-
-    if(!suspended_tasks)
-        return false;
-
-    while((queue_t*) (aux_task->next) != suspended_tasks && aux_task->id != task_id)
-        aux_task = aux_task->next;
-
-    if(aux_task->id == task_id)
-        return true;
-
-
-    return false;
-
 }
 
 static int task_owner(int task_id)
@@ -220,7 +197,7 @@ void pingpong_init ()
     if(main_task_create())
         printf("Erro [pingpong_init()] #1: Nao foi possivel criar main\n");
 
-    if(verbose == true)
+    if(verbose)
         printf("Main criada\n");
 
     // DISPATCHER
@@ -262,9 +239,8 @@ int task_create (task_t *n_task, void (*start_func)(void *), void *arg)
     queue_append(&(common_user.task_list), (queue_t*)n_task);
     n_task->owner = &common_user;
     n_task->priority = 0;
-    n_task->status = READY;
 
-    if(verbose == true)
+    if(verbose)
     {
         queue_print("[task_create()]\troot TID: ", root.task_list, (void*)task_print);
         queue_print("[task_create()]\tuser TID: ", common_user.task_list, (void*)task_print);
@@ -303,7 +279,6 @@ void task_exit (int exitCode)
         aux_task = (task_t*) queue_remove(&(aux_user->task_list), (queue_t*)aux_task);
         free(aux_task->next);
         free(aux_task->prev);
-        aux_task = NULL;
         running_tasks--;
     }
     else if(aux_task)
@@ -311,7 +286,7 @@ void task_exit (int exitCode)
         printf("Erro [task_exit() #2]: Tarefa não encontrada\n");
     }
 
-    if(verbose == true)
+    if(verbose)
     {
         queue_print("[task_exit()]\troot TID: ", root.task_list, (void*)task_print);
         queue_print("[task_exit()]\tuser TID: ", common_user.task_list, (void*)task_print);
@@ -319,7 +294,7 @@ void task_exit (int exitCode)
 
     if(task_owner(MAIN_ID) != root.id || task_switch((task_t*)root.task_list) < 0)
     {
-        if(verbose == true)
+        if(verbose)
             printf("[task_exit() #1]: Não é possível voltar para main()\n");
 
         printf("Finalizando o Sistema\n");
@@ -332,70 +307,45 @@ int task_switch (task_t *n_task)
 {
     user_t *aux_user;
 
-    if(this_task_is_suspended(task_id()) == false)
+    if(root.task_list && task_owner(task_id()) == root.id)
     {
-        if(root.task_list && task_owner(task_id()) == root.id)
+        aux_user = &root;
+    }
+    else if(common_user.task_list && task_owner(task_id()) == common_user.id)
+    {
+        aux_user = &common_user;
+    }
+    else if(task_owner(MAIN_ID) == root.id)
+    {
+        if(verbose)
         {
-            aux_user = &root;
+            printf("Task excluida, voltando pra main\n");
+            printf("c_tid = %d \t n_tid = %d\n",current_task_id, n_task->id);
         }
-        else if(common_user.task_list && task_owner(task_id()) == common_user.id)
-        {
-            aux_user = &common_user;
-        }
-        else if(task_owner(MAIN_ID) == root.id)
-        {
-            if(verbose == true)
-            {
-                printf("Task excluida, voltando pra main\n");
-                printf("c_tid = %d \t n_tid = %d\n",current_task_id, n_task->id);
-            }
 
-            current_task_id = n_task->id;	//Caso o switch tenha sido invocado por uma tarefa já encerrada [task_exit()]
-            setcontext(((task_t*)(root.task_list))->context); // cabeça da lista é sempre a main
+        current_task_id = n_task->id;	//Caso o switch tenha sido invocado por uma tarefa já encerrada [task_exit()]
+        setcontext(((task_t*)(root.task_list))->context); // cabeça da lista é sempre a main
 
-            return 0;
-        }
-        else
-        {
-            printf("Erro [task_switch(): Task atual invalida");
+        return 0;
+    }
+    else
+        return -1;
+
+    task_t *aux_task = (task_t*)(aux_user->task_list);
+
+    while((queue_t*)(aux_task->next) != aux_user->task_list && current_task_id != aux_task->id)
+        aux_task = aux_task->next;
+
+    if(current_task_id == aux_task->id)
+    {
+        if(verbose)
+            printf("c_tid = %d \t n_tid = %d\n",current_task_id, n_task->id);
+
+        current_task_id = n_task->id;
+
+        if(swapcontext(aux_task->context, n_task->context) < 0)
             return -1;
-        }
-
-        task_t *aux_task = (task_t*)(aux_user->task_list);
-
-        while((queue_t*)(aux_task->next) != aux_user->task_list && current_task_id != aux_task->id)
-            aux_task = aux_task->next;
-
-        if(current_task_id == aux_task->id)
-        {
-            if(verbose == true)
-                printf("c_tid = %d \t n_tid = %d\n",current_task_id, n_task->id);
-
-            current_task_id = n_task->id;
-
-            if(swapcontext(aux_task->context, n_task->context) < 0)
-                return -1;
-        }
     }
-    else // Caso a tarefa atual tenha sido suspensa antes da troca
-    {
-        task_t *aux_task = (task_t*)suspended_tasks;
-
-        while((queue_t*)(aux_task->next) != suspended_tasks && current_task_id != aux_task->id)
-            aux_task = aux_task->next;
-
-        if(current_task_id == aux_task->id)
-        {
-            if(verbose == true)
-                printf("c_tid = %d \t n_tid = %d\n",current_task_id, n_task->id);
-
-            current_task_id = n_task->id;
-
-            if(swapcontext(aux_task->context, n_task->context) < 0)
-                return -1;
-        }
-    }
-
 
     return 0;
 }
@@ -403,103 +353,4 @@ int task_switch (task_t *n_task)
 int task_id ()
 {
     return current_task_id;
-}
-
-void task_setprio (task_t *task, int prio)
-{
-    if(task == NULL)
-    {
-        if(this_task_is_suspended(task_id()) == false)
-        {
-            user_t *aux_user;
-
-            if(root.task_list && task_owner(task_id()) == root.id)
-            {
-                aux_user = &root;
-            }
-            else if(common_user.task_list && task_owner(task_id()) == common_user.id)
-            {
-                aux_user = &common_user;
-            }
-            else
-            {
-                printf("Erro [task_setprio(): Task atual invalida");
-                return ;
-            }
-
-            task_t *aux_task = (task_t*)(aux_user->task_list);
-
-            while((queue_t*)(aux_task->next) != aux_user->task_list && current_task_id != aux_task->id)
-                aux_task = aux_task->next;
-
-            aux_task->priority=prio;
-        }
-        else
-        {
-            task_t *aux_task = (task_t*)suspended_tasks;
-
-            while((queue_t*)(aux_task->next) != suspended_tasks && current_task_id != aux_task->id)
-                aux_task = aux_task->next;
-
-            aux_task->priority=prio;
-        }
-    }
-    else
-    {
-        task->priority = prio;
-    }
-}
-
-int task_getprio (task_t *task)
-{
-    if(task==NULL)
-    {
-        if(this_task_is_suspended(task_id()) == false)
-        {
-            user_t *aux_user;
-
-            if(root.task_list && task_owner(task_id()) == root.id)
-            {
-                aux_user = &root;
-            }
-            else if(common_user.task_list && task_owner(task_id()) == common_user.id)
-            {
-                aux_user = &common_user;
-            }
-            else
-                return -1;
-
-            task_t *aux_task = (task_t*)(aux_user->task_list);
-
-            while((queue_t*)(aux_task->next) != aux_user->task_list && current_task_id != aux_task->id)
-                aux_task = aux_task->next;
-
-            return aux_task->priority;
-        }
-        else
-        {
-            task_t *aux_task = (task_t*)suspended_tasks;
-
-            while((queue_t*)(aux_task->next) != suspended_tasks && current_task_id != aux_task->id)
-                aux_task = aux_task->next;
-
-            return aux_task->priority;
-        }
-    }
-
-    return task->priority;
-}
-
-void task_suspend (task_t *n_task, task_t **queue)
-{
-    //queue_append((queue_t**)queue, queue_remove((queue_t**)(&(n_task->owner->task_list)), (queue_t*)n_task));
-    queue_append(&suspended_tasks, queue_remove((queue_t**)(&(n_task->owner->task_list)), (queue_t*)n_task));
-    return;
-}
-void task_suspend (task_t *n_task, task_t **queue) ;
-
-void task_resume (task_t *n_task)
-{
-    queue_append((queue_t**)(&(n_task->owner->task_list)), queue_remove(&suspended_tasks, (queue_t*)n_task));
-    return;
 }

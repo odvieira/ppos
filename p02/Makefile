@@ -3,7 +3,7 @@ default = build
 # Source, Executable, Includes, Library Defines
 INCL = queue.c queue.h pingpong.c datatypes.h
 OBJ = $(SRC:.c=.o)
-OUT = so_p02
+OUT = ppos_2
 
 # Compiler, Linker Defines
 CC = gcc

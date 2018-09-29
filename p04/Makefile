@@ -4,7 +4,7 @@ default = build
 INCL = queue.c queue.h pingpong.c datatypes.h
 SRC = main.c
 OBJ = $(SRC:.c=.o)
-OUT = ppos_3
+OUT = ppos_4
 
 # Compiler, Linker Defines
 CC = gcc

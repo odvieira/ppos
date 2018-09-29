@@ -1,0 +1,16 @@
+#!/bin/sh
+for i in p*
+do
+	if [ -d ${i} ]
+	then
+		echo "Entrando em ${i}/"
+		cd ${i}/;
+		if [ -f Makefile ]
+		then
+			echo "Contruindo..."
+			make
+		fi
+		echo "Saindo de ${i}/"
+		cd ..
+	fi
+done
