@@ -2,6 +2,7 @@
 
 // variaveis de ambiente
 #define MAIN_ID 0
+#define DISP_ID 1
 #define ROOT_ID 0
 
 unsigned int current_task_id = MAIN_ID, // Identification of the task that is being executed
@@ -26,7 +27,8 @@ static void task_print(task_t* task) // Private Function used to display info wh
 static int scheduler(task_t *aux_task_list)
 {
     unsigned int id = MAIN_ID;
-    short int p_aux = 0;
+    short int priority_aux = 20;
+    int age_aux = 0;
     task_t *aux_task = aux_task_list, *aux_ptr = NULL;
 
     if(verbose == true)
@@ -35,28 +37,34 @@ static int scheduler(task_t *aux_task_list)
         queue_print("TIDs in Scheduler: ", (queue_t*)aux_task_list, (void*)task_print);
     }
 
-
     while(aux_task->next->id != aux_task_list->id)
     {
-        if(aux_task->priority > p_aux)
+        if(aux_task->priority - aux_task->age < priority_aux - age_aux)
         {
-            p_aux = aux_task->priority;
+            priority_aux = aux_task->priority;
+            age_aux = aux_task->age;
             id = aux_task->id;
+
             aux_ptr = aux_task;
-            aux_task = aux_task->next;
         }
-        else
-            aux_task = aux_task->next;
+
+        aux_task->age = aux_task->age + 1;
+        aux_task = aux_task->next;
     }
 
-    if(aux_task->priority > p_aux)
+    if(aux_task->priority - aux_task->age < priority_aux - age_aux)
     {
-        p_aux = aux_task->priority;
+        priority_aux = aux_task->priority;
+        age_aux = aux_task->age;
         id = aux_task->id;
+
         aux_ptr = aux_task;
     }
 
-    aux_ptr->priority = aux_ptr->priority + 1;
+    aux_task->age = aux_task->age + 1;
+
+    aux_ptr->age = 0;
+    queue_append((queue_t**)(&aux_task_list), queue_remove((queue_t**)(&aux_task_list), (queue_t*)aux_ptr));
     aux_ptr = NULL;
 
     if(verbose == true)
@@ -76,7 +84,7 @@ static void dispatcher_body() // dispatcher é uma tarefa
         next_id = scheduler((task_t*)common_user.task_list); // scheduler é uma função
 
         if(verbose == true)
-            printf("next_id obtido\n");
+            printf("next_id obtido %d\n", next_id);
 
         while(aux_task->next->id != ((task_t*)(common_user.task_list))->id && next_id != aux_task->id)
             aux_task = aux_task->next;
@@ -149,6 +157,7 @@ static int main_task_create()
     main_task.owner = &root;
     main_task.priority = 0;
     main_task.status = READY;
+    main_task.age = 0;
 
     return 0;
 }
@@ -263,6 +272,7 @@ int task_create (task_t *n_task, void (*start_func)(void *), void *arg)
     n_task->owner = &common_user;
     n_task->priority = 0;
     n_task->status = READY;
+    n_task->age = 0;
 
     if(verbose == true)
     {
@@ -317,13 +327,16 @@ void task_exit (int exitCode)
         queue_print("[task_exit()]\tuser TID: ", common_user.task_list, (void*)task_print);
     }
 
-    if(task_owner(MAIN_ID) != root.id || task_switch((task_t*)root.task_list) < 0)
-    {
-        if(verbose == true)
-            printf("[task_exit() #1]: Não é possível voltar para main()\n");
+    if(task_owner(MAIN_ID) != root.id || task_switch((task_t*)root.task_list) < 0){
+        {
+            if(verbose == true)
+                printf("[task_exit() #1]: Não é possível voltar para main()\n");
 
-        printf("Finalizando o Sistema\n");
+            printf("Finalizando o Sistema\n");
+        }
     }
+    /*else
+        printf("Erro [task_exit()] #2: caso inesperado\n");*/
 
     return;
 }
@@ -342,7 +355,7 @@ int task_switch (task_t *n_task)
         {
             aux_user = &common_user;
         }
-        else if(task_owner(MAIN_ID) == root.id)
+        else if(task_owner(MAIN_ID) == root.id && queue_size(common_user.task_list) == 0)
         {
             if(verbose == true)
             {
@@ -355,9 +368,25 @@ int task_switch (task_t *n_task)
 
             return 0;
         }
+        else if(queue_size(common_user.task_list) > 0)
+        {
+            task_t *aux_task = (task_t*)root.task_list;
+
+            while((queue_t*)(aux_task->next) != root.task_list && DISP_ID != aux_task->id)
+                aux_task = aux_task->next;
+
+            if(DISP_ID == aux_task->id)
+            {
+                current_task_id = MAIN_ID;
+                task_yield();
+                return 0;
+            }
+
+            return -1;
+        }
         else
         {
-            printf("Erro [task_switch(): Task atual invalida");
+            printf("Erro [task_switch()]: Task atual invalida\n");
             return -1;
         }
 
@@ -397,6 +426,7 @@ int task_switch (task_t *n_task)
     }
 
 
+
     return 0;
 }
 
@@ -423,7 +453,7 @@ void task_setprio (task_t *task, int prio)
             }
             else
             {
-                printf("Erro [task_setprio(): Task atual invalida");
+                printf("Erro [task_setprio(): Task atual invalida\n");
                 return ;
             }
 
