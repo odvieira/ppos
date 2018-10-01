@@ -12,7 +12,7 @@
 #endif
 
 // estrutura que define um tratador de sinal (deve ser global ou static)
-struct sigaction action ;
+struct sigaction action;
 
 // estrutura de inicialização to timer
 struct itimerval timer;

@@ -10,7 +10,7 @@ void queue_append (queue_t **queue, queue_t *elem)
     if(elem->prev != NULL || elem->next != NULL)
     {
         printf("Erro [queue_append() #2]: Elemento já pertence a uma fila\n");
-        elem->next=elem->prev=NULL;
+		return;
     }
 
     if(*queue == NULL)  //Fila vazia
@@ -26,6 +26,8 @@ void queue_append (queue_t **queue, queue_t *elem)
         elem->prev->next = elem; //Penúltimo aponta para o último
         elem->next = *queue; //Novo último aponta para o primeiro
     }
+
+	return;
 }
 
 queue_t *queue_remove (queue_t **queue, queue_t *elem)

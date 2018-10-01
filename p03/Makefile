@@ -12,7 +12,7 @@ RM = rm -rf
 
 # Build
 build:
-	@$(CC) $(addprefix src/, $(SRC)) $(addprefix ../lib/, $(INCL)) -o $(OUT);
+	@$(CC) $(addprefix src/, $(SRC)) $(addprefix ../lib_0-4/, $(INCL)) -o $(OUT);
 
 # Clean Up Objects, Executables, dumps out of source directory
 clean:

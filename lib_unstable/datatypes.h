@@ -21,6 +21,18 @@ typedef struct user_t
     queue_t *task_list;
 } user_t;
 
+typedef enum status_t
+{
+    SUSPENDED,
+    READY
+} status_t;
+
+typedef enum boolean_t
+{
+    false,
+    true
+} boolean_t;
+
 // Estrutura que define uma tarefa
 typedef struct task_t
 {
@@ -28,7 +40,13 @@ typedef struct task_t
     int id; // ID da tarefa
     ucontext_t *context;
     user_t *owner;
-    int priority;
+    short int priority;
+    status_t status;
+    int age;
+    time_t processor_time;
+    time_t start;
+    unsigned int total_time;
+    unsigned int activations;
 } task_t;
 
 // estrutura que define um semáforo

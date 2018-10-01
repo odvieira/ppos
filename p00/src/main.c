@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "../../lib/queue.h"
+#include "../../lib_0-4/queue.h"
 
 #define N 100
 

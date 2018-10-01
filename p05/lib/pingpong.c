@@ -5,18 +5,31 @@
 #define DISP_ID 1
 #define ROOT_ID 0
 
+static time_t start_os,
+       now;
+
 unsigned int current_task_id = MAIN_ID, // Identification of the task that is being executed
              running_tasks = MAIN_ID, // Number of running tasks in a moment
              created_tasks = MAIN_ID,
              created_users = ROOT_ID,
-             verbose = false;	// Display info about task_switch() and task_exit() on stdout
+             quantum = 20;
+
+boolean_t    verbose = false,	// Display info about task_switch() and task_exit() on stdout
+             time_show = false;
 
 static user_t root, common_user;
 
 static task_t dispatcher,
-       main_task;
+       main_task,
+       ext_task;
 
 static queue_t *suspended_tasks;
+
+// estrutura que define um tratador de sinal (deve ser global ou static)
+struct sigaction action;
+
+// estrutura de inicialização to timer
+struct itimerval timer;
 
 static void task_print(task_t* task) // Private Function used to display info when verbose is true
 {
@@ -26,9 +39,8 @@ static void task_print(task_t* task) // Private Function used to display info wh
 
 static int scheduler(task_t *aux_task_list)
 {
-    unsigned int id = MAIN_ID;
-    short int priority_aux = 20;
-    int age_aux = 0;
+    unsigned int id = DISP_ID;
+    short int priority_din = -21;
     task_t *aux_task = aux_task_list, *aux_ptr = NULL;
 
     if(verbose == true)
@@ -39,29 +51,29 @@ static int scheduler(task_t *aux_task_list)
 
     while(aux_task->next->id != aux_task_list->id)
     {
-        if(aux_task->priority - aux_task->age < priority_aux - age_aux)
+        if(aux_task->priority + aux_task->age > priority_din)
         {
-            priority_aux = aux_task->priority;
-            age_aux = aux_task->age;
-            id = aux_task->id;
-
             aux_ptr = aux_task;
+            priority_din = aux_task->priority + aux_task->age;
+            id = aux_task->id;
         }
 
-        aux_task->age = aux_task->age + 1;
+        if(aux_task->priority + aux_task->age > -20 && aux_task->priority + aux_task->age < 20)
+            aux_task->age = aux_task->age + 1;
+
         aux_task = aux_task->next;
     }
 
-    if(aux_task->priority - aux_task->age < priority_aux - age_aux)
+    if(aux_task->priority + aux_task->age > priority_din)
     {
-        priority_aux = aux_task->priority;
-        age_aux = aux_task->age;
-        id = aux_task->id;
-
         aux_ptr = aux_task;
+        priority_din = aux_task->priority + aux_task->age;
+        id = aux_task->id;
     }
 
-    aux_task->age = aux_task->age + 1;
+    if(aux_task->priority + aux_task->age > -20 && aux_task->priority + aux_task->age < 20)
+        aux_task->age = aux_task->age + 1;
+
 
     aux_ptr->age = 0;
     queue_append((queue_t**)(&aux_task_list), queue_remove((queue_t**)(&aux_task_list), (queue_t*)aux_ptr));
@@ -91,12 +103,22 @@ static void dispatcher_body() // dispatcher é uma tarefa
 
         if(next_id != aux_task->id)
         {
-            printf("Erro [dispatcher] #1: Scheduler retornou um id invalido\n");
+            task_switch(&dispatcher);
         }
         else
         {
             task_switch(aux_task); // transfere controle para a tarefa "aux_task"
         }
+    }
+
+    if(task_switch(&main_task) < 0)
+    {
+        if(verbose == true)
+            printf("[task_exit() #1]: Não é possível voltar para main()\n");
+
+        printf("Finalizando o Sistema\n");
+
+        return;
     }
 
     task_exit(0) ; // encerra a tarefa dispatcher*/
@@ -215,6 +237,44 @@ static int task_owner(int task_id)
     return -1;
 }
 
+void handler (int signum)
+{
+    if(quantum <= 0)
+    {
+        user_t* aux_user;
+
+        if(root.task_list && task_owner(task_id()) == root.id)
+        {
+            aux_user = &root;
+        }
+        else if(common_user.task_list && task_owner(task_id()) == common_user.id)
+        {
+            aux_user = &common_user;
+        }
+
+        task_t* aux_task = (task_t*)aux_user->task_list;
+
+        while(aux_task->next != (task_t*)aux_user->task_list && aux_task->id != task_id())
+            aux_task = aux_task->next;
+
+        if(aux_task->id == task_id())
+        {
+            aux_task->processor_time += 20;
+            aux_task->activations = aux_task->activations + 1;
+            quantum = 20;
+
+            if(task_owner(task_id()) == common_user.id)
+                task_yield();
+        }
+
+        return;
+    }
+
+    quantum--;
+
+    return;
+}
+
 void pingpong_init ()
 {
     setvbuf(stdout, 0, _IONBF, 0);
@@ -235,6 +295,29 @@ void pingpong_init ()
     // DISPATCHER
     task_create(&dispatcher, (void*)dispatcher_body, NULL);
     task_change_owner(&dispatcher, &root);
+
+    // registra a a��o para o sinal de timer SIGALRM
+    action.sa_handler = handler ;
+    sigemptyset (&action.sa_mask) ;
+    action.sa_flags = 0 ;
+    if (sigaction (SIGALRM, &action, 0) < 0)
+    {
+        perror ("Erro em sigaction: ") ;
+        exit (1) ;
+    }
+
+    // ajusta valores do temporizador
+    timer.it_value.tv_usec = 1 ;      // primeiro disparo, em micro-segundos
+    //timer.it_value.tv_sec  = 3 ;      // primeiro disparo, em segundos
+    timer.it_interval.tv_usec = 20 ;   // disparos subsequentes, em micro-segundos
+    //timer.it_interval.tv_sec  = 20;   // disparos subsequentes, em segundos
+
+    // arma o temporizador ITIMER_REAL (vide man setitimer)
+    if (setitimer (ITIMER_REAL, &timer, 0) < 0)
+    {
+        perror ("Erro em setitimer: ") ;
+        exit (1) ;
+    }
 
     return;
 }
@@ -283,6 +366,10 @@ int task_create (task_t *n_task, void (*start_func)(void *), void *arg)
 
     running_tasks++;
 
+    n_task->processor_time = 0;
+    n_task->activations = 0;
+    n_task->start = systime();
+
     return n_task->id;
 }
 
@@ -303,16 +390,20 @@ void task_exit (int exitCode)
 
     task_t* aux_task = (task_t*)(aux_user->task_list);
 
-    while(aux_task->next->id != ((task_t*)(aux_user->task_list))->id && aux_task->id != current_task_id)
+    while(aux_task->next != (task_t*)(aux_user->task_list) && aux_task->id != current_task_id)
         aux_task = aux_task->next;
 
     if(aux_task->id == current_task_id)
     {
-        free(aux_task->context);
-        aux_task->context = NULL;
+        aux_task->total_time = abs(systime() - aux_task->start);
+        if(time_show == true)
+            printf("Task %d exit: execution time %d ms, processor time %ld ms, %d activations\n", aux_task->id, aux_task->total_time, aux_task->processor_time, aux_task->activations);
+        //free(aux_task->context);
+        //aux_task->context = NULL;
         aux_task = (task_t*) queue_remove(&(aux_user->task_list), (queue_t*)aux_task);
         free(aux_task->next);
         free(aux_task->prev);
+        ext_task = *aux_task;
         aux_task = NULL;
         running_tasks--;
     }
@@ -327,22 +418,29 @@ void task_exit (int exitCode)
         queue_print("[task_exit()]\tuser TID: ", common_user.task_list, (void*)task_print);
     }
 
-    if(task_owner(MAIN_ID) != root.id || task_switch((task_t*)root.task_list) < 0){
-        {
-            if(verbose == true)
-                printf("[task_exit() #1]: Não é possível voltar para main()\n");
+    if(!(current_task_id = DISP_ID) || swapcontext(ext_task.context, dispatcher.context) < 0)
+            perror("nao foi possivel voltar para o dispatcher\n");
 
-            printf("Finalizando o Sistema\n");
-        }
-    }
-    /*else
-        printf("Erro [task_exit()] #2: caso inesperado\n");*/
-
-    return;
+        return;
 }
 
 int task_switch (task_t *n_task)
 {
+    if(n_task->id == MAIN_ID)
+    {
+        if(verbose)
+        {
+            printf("Task excluida, voltando pra main\n");
+            printf("c_tid = %d \t n_tid = %d\n",current_task_id, n_task->id);
+        }
+
+        current_task_id = MAIN_ID;	//Caso o switch tenha sido invocado por uma tarefa já encerrada [task_exit()]
+        swapcontext(ext_task.context, main_task.context); // cabeça da lista é sempre a main
+
+        return 0;
+    }
+
+
     user_t *aux_user;
 
     if(this_task_is_suspended(task_id()) == false)
@@ -354,35 +452,6 @@ int task_switch (task_t *n_task)
         else if(common_user.task_list && task_owner(task_id()) == common_user.id)
         {
             aux_user = &common_user;
-        }
-        else if(task_owner(MAIN_ID) == root.id && queue_size(common_user.task_list) == 0)
-        {
-            if(verbose == true)
-            {
-                printf("Task excluida, voltando pra main\n");
-                printf("c_tid = %d \t n_tid = %d\n",current_task_id, n_task->id);
-            }
-
-            current_task_id = n_task->id;	//Caso o switch tenha sido invocado por uma tarefa já encerrada [task_exit()]
-            setcontext(((task_t*)(root.task_list))->context); // cabeça da lista é sempre a main
-
-            return 0;
-        }
-        else if(queue_size(common_user.task_list) > 0)
-        {
-            task_t *aux_task = (task_t*)root.task_list;
-
-            while((queue_t*)(aux_task->next) != root.task_list && DISP_ID != aux_task->id)
-                aux_task = aux_task->next;
-
-            if(DISP_ID == aux_task->id)
-            {
-                current_task_id = MAIN_ID;
-                task_yield();
-                return 0;
-            }
-
-            return -1;
         }
         else
         {
@@ -532,4 +601,10 @@ void task_resume (task_t *n_task)
 {
     queue_append((queue_t**)(&(n_task->owner->task_list)), queue_remove(&suspended_tasks, (queue_t*)n_task));
     return;
+}
+
+unsigned int systime()
+{
+    now = time(&now);
+    return ((now - start_os)%60) * 1000;
 }

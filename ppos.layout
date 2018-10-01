@@ -2,83 +2,131 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="p02/src/pingpong-tasks3.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="p05/pingpong-preempcao.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="0" topLine="29" />
+			<Cursor1 position="67" topLine="9" />
 		</Cursor>
 	</File>
-	<File name="lib/pingpong.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="1" zoom_2="0">
+	<File name="p02/src/pingpong-tasks1.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="9866" topLine="0" />
+			<Cursor1 position="75" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="p04/src/main.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1027" topLine="21" />
+		</Cursor>
+	</File>
+	<File name="lib/pingpong.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="10527" topLine="21" />
 		</Cursor>
 		<Folding>
-			<Collapse line="21" />
-			<Collapse line="27" />
 			<Collapse line="34" />
 			<Collapse line="40" />
-			<Collapse line="42" />
-			<Collapse line="55" />
-			<Collapse line="76" />
-			<Collapse line="81" />
-			<Collapse line="92" />
-			<Collapse line="96" />
-			<Collapse line="105" />
-			<Collapse line="115" />
-			<Collapse line="126" />
-			<Collapse line="128" />
-			<Collapse line="139" />
-			<Collapse line="146" />
-			<Collapse line="165" />
-			<Collapse line="185" />
-			<Collapse line="189" />
-			<Collapse line="196" />
-			<Collapse line="202" />
-			<Collapse line="209" />
+			<Collapse line="46" />
+			<Collapse line="52" />
+			<Collapse line="54" />
+			<Collapse line="67" />
+			<Collapse line="88" />
+			<Collapse line="93" />
+			<Collapse line="104" />
+			<Collapse line="108" />
+			<Collapse line="127" />
+			<Collapse line="137" />
+			<Collapse line="148" />
+			<Collapse line="150" />
+			<Collapse line="161" />
+			<Collapse line="168" />
+			<Collapse line="187" />
+			<Collapse line="207" />
+			<Collapse line="211" />
 			<Collapse line="218" />
+			<Collapse line="224" />
+			<Collapse line="231" />
+			<Collapse line="240" />
 			<Collapse line="242" />
-			<Collapse line="247" />
-			<Collapse line="249" />
-			<Collapse line="256" />
-			<Collapse line="277" />
-			<Collapse line="289" />
-			<Collapse line="293" />
-			<Collapse line="297" />
-			<Collapse line="309" />
-			<Collapse line="319" />
-			<Collapse line="324" />
-			<Collapse line="329" />
+			<Collapse line="246" />
+			<Collapse line="250" />
+			<Collapse line="260" />
+			<Collapse line="278" />
+			<Collapse line="303" />
+			<Collapse line="316" />
+			<Collapse line="325" />
 			<Collapse line="330" />
-			<Collapse line="337" />
-			<Collapse line="344" />
-			<Collapse line="348" />
-			<Collapse line="350" />
-			<Collapse line="354" />
+			<Collapse line="332" />
+			<Collapse line="339" />
 			<Collapse line="360" />
-			<Collapse line="387" />
-			<Collapse line="409" />
-			<Collapse line="416" />
-			<Collapse line="433" />
-			<Collapse line="438" />
-			<Collapse line="440" />
-			<Collapse line="442" />
+			<Collapse line="380" />
+			<Collapse line="384" />
+			<Collapse line="410" />
+			<Collapse line="415" />
+			<Collapse line="427" />
 			<Collapse line="446" />
-			<Collapse line="450" />
-			<Collapse line="454" />
+			<Collapse line="448" />
+			<Collapse line="452" />
+			<Collapse line="456" />
 			<Collapse line="467" />
-			<Collapse line="477" />
-			<Collapse line="483" />
+			<Collapse line="478" />
 			<Collapse line="485" />
-			<Collapse line="487" />
-			<Collapse line="491" />
-			<Collapse line="495" />
+			<Collapse line="502" />
+			<Collapse line="507" />
 			<Collapse line="509" />
+			<Collapse line="511" />
+			<Collapse line="515" />
+			<Collapse line="519" />
 			<Collapse line="523" />
-			<Collapse line="531" />
+			<Collapse line="536" />
+			<Collapse line="546" />
+			<Collapse line="552" />
+			<Collapse line="554" />
+			<Collapse line="556" />
+			<Collapse line="560" />
+			<Collapse line="564" />
+			<Collapse line="578" />
+			<Collapse line="592" />
+			<Collapse line="600" />
+			<Collapse line="606" />
 		</Folding>
 	</File>
-	<File name="p04/src/main.c" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="lib/datatypes.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1045" topLine="8" />
+			<Cursor1 position="856" topLine="28" />
+		</Cursor>
+	</File>
+	<File name="p02/src/pingpong-tasks2.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="70" topLine="16" />
+		</Cursor>
+	</File>
+	<File name="p06/src/pingpong-contab.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="391" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="p05/timer.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="709" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="p02/src/pingpong-tasks3.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="59" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="lib/pingpong.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="449" topLine="57" />
+		</Cursor>
+	</File>
+	<File name="p06/src/pingpong-contab-prio.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="236" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="p03/src/main.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="648" topLine="5" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

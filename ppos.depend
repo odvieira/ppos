@@ -1,14 +1,17 @@
 # depslib dependency file v1.0
-1538337706 source:/home/dvieira/ppos/lib/pingpong.c
+1538360149 source:/home/dvieira/ppos/lib/pingpong.c
 	"pingpong.h"
 
-1538337706 /home/dvieira/ppos/lib/pingpong.h
+1538350534 /home/dvieira/ppos/lib/pingpong.h
 	"datatypes.h"
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
+	<signal.h>
+	<sys/time.h>
+	<time.h>
 
-1538337706 /home/dvieira/ppos/lib/datatypes.h
+1538353193 /home/dvieira/ppos/lib/datatypes.h
 	<ucontext.h>
 	"queue.h"
 
@@ -19,20 +22,20 @@
 1538337706 source:/home/dvieira/ppos/lib/queue.c
 	"queue.h"
 
-1537315092 source:/home/dvieira/ppos/p03/src/main.c
+1538354842 source:/home/dvieira/ppos/p03/src/main.c
 	<stdio.h>
 	<stdlib.h>
 	"../../lib/pingpong.h"
 
-1537316782 source:/home/dvieira/ppos/p02/src/pingpong-tasks1.c
+1538356444 source:/home/dvieira/ppos/p02/src/pingpong-tasks1.c
 	<stdio.h>
 	<stdlib.h>
-	"../../lib/pingpong.h"
+	"../backup_lib/pingpong.h"
 
-1537333613 source:/home/dvieira/ppos/p02/src/pingpong-tasks2.c
+1538356444 source:/home/dvieira/ppos/p02/src/pingpong-tasks2.c
 	<stdio.h>
 	<stdlib.h>
-	"../../lib/pingpong.h"
+	"../backup_lib/pingpong.h"
 
 1537333054 source:/home/dvieira/ppos/p02/src/pingpong-tasks3.c
 	<stdio.h>
@@ -44,8 +47,69 @@
 	<stdlib.h>
 	<ucontext.h>
 
-1538337706 source:/home/dvieira/ppos/p04/src/main.c
+1538337935 source:/home/dvieira/ppos/p04/src/main.c
+	<stdio.h>
+	<stdlib.h>
+	"../backup_lib/pingpong.h"
+
+1538337706 /home/dvieira/ppos/p04/backup_lib/pingpong.h
+	"datatypes.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+
+1538337706 /home/dvieira/ppos/p04/backup_lib/datatypes.h
+	<ucontext.h>
+	"queue.h"
+
+1538337706 /home/dvieira/ppos/p04/backup_lib/queue.h
+	<stdlib.h>
+	<stdio.h>
+
+1538343805 source:/home/dvieira/ppos/p05/timer.c
+	<stdio.h>
+	<stdlib.h>
+	<signal.h>
+	<sys/time.h>
+
+1538344678 source:/home/dvieira/ppos/p05/pingpong-preempcao.c
+	<stdio.h>
+	<stdlib.h>
+	"../lib/pingpong.h"
+
+1538350196 source:/home/dvieira/ppos/p06/pingpong-contab.c
+	<stdio.h>
+	<stdlib.h>
+	"../lib/pingpong.h"
+
+1538354569 source:/home/dvieira/ppos/p06/pingpong-contab-prio.c
+	<stdio.h>
+	<stdlib.h>
+	"../lib/pingpong.h"
+
+1538355728 source:/home/dvieira/ppos/p06/src/pingpong-contab.c
 	<stdio.h>
 	<stdlib.h>
 	"../../lib/pingpong.h"
+
+1538337706 source:/home/dvieira/ppos/p02/backup_lib/pingpong.c
+	"pingpong.h"
+
+1538337706 /home/dvieira/ppos/p02/backup_lib/pingpong.h
+	"datatypes.h"
+	<stdio.h>
+	<stdlib.h>
+	<stdbool.h>
+	<string.h>
+
+1538337706 /home/dvieira/ppos/p02/backup_lib/datatypes.h
+	<ucontext.h>
+	"queue.h"
+
+1538337706 /home/dvieira/ppos/p02/backup_lib/queue.h
+	<stdlib.h>
+	<stdio.h>
+
+1538337706 source:/home/dvieira/ppos/p02/backup_lib/queue.c
+	"queue.h"
 

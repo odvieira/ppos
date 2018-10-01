@@ -6,7 +6,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../backup_lib/pingpong.h"
+#include "../../lib_0-4/pingpong.h"
 
 task_t Pang, Peng, Ping, Pong, Pung ;
 
@@ -35,16 +35,16 @@ int main (int argc, char *argv[])
   task_setprio (&Pang, 0);
 
   task_create (&Peng, Body, "        Peng") ;
-  task_setprio (&Peng, 2);
+  task_setprio (&Peng, -2);
 
   task_create (&Ping, Body, "            Ping") ;
-  task_setprio (&Ping, 4);
+  task_setprio (&Ping, -4);
 
   task_create (&Pong, Body, "                Pong") ;
-  task_setprio (&Pong, 6);
+  task_setprio (&Pong, -6);
 
   task_create (&Pung, Body, "                    Pung") ;
-  task_setprio (&Pung, 8);
+  task_setprio (&Pung, -8);
 
   task_yield () ;
 
