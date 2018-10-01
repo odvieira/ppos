@@ -113,3 +113,28 @@
 1538337706 source:/home/dvieira/ppos/p02/backup_lib/queue.c
 	"queue.h"
 
+1538422190 source:/home/todos/alunos/ct/a1366424/ppos/p06/src/pingpong-contab-prio.c
+	<stdio.h>
+	<stdlib.h>
+	"../lib/pingpong.h"
+
+1538422190 /home/todos/alunos/ct/a1366424/ppos/p06/lib/pingpong.h
+	"datatypes.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<signal.h>
+	<sys/time.h>
+	<time.h>
+
+1538422190 /home/todos/alunos/ct/a1366424/ppos/p06/lib/datatypes.h
+	<ucontext.h>
+	"queue.h"
+
+1538422190 /home/todos/alunos/ct/a1366424/ppos/p06/lib/queue.h
+	<stdlib.h>
+	<stdio.h>
+
+1538422190 source:/home/todos/alunos/ct/a1366424/ppos/p06/lib/queue.c
+	"queue.h"
+

@@ -15,7 +15,7 @@ unsigned int current_task_id = MAIN_ID, // Identification of the task that is be
              quantum = 20;
 
 boolean_t    verbose = false,	// Display info about task_switch() and task_exit() on stdout
-             time_show = false;
+             time_show = true;
 
 static user_t root, common_user;
 
@@ -87,6 +87,7 @@ static int scheduler(task_t *aux_task_list)
 
 static void dispatcher_body() // dispatcher é uma tarefa
 {
+    current_task_id = DISP_ID;
     int next_id = MAIN_ID;
     task_t *aux_task;
 
@@ -110,6 +111,10 @@ static void dispatcher_body() // dispatcher é uma tarefa
             task_switch(aux_task); // transfere controle para a tarefa "aux_task"
         }
     }
+
+    dispatcher.total_time = abs(systime() - aux_task->start);
+        if(time_show == true)
+            printf("Task %d exit: execution time %d ms, processor time %ld ms, %d activations\n", dispatcher.id, dispatcher.total_time, dispatcher.processor_time, dispatcher.activations);
 
     if(task_switch(&main_task) < 0)
     {
@@ -595,7 +600,6 @@ void task_suspend (task_t *n_task, task_t **queue)
     queue_append(&suspended_tasks, queue_remove((queue_t**)(&(n_task->owner->task_list)), (queue_t*)n_task));
     return;
 }
-void task_suspend (task_t *n_task, task_t **queue) ;
 
 void task_resume (task_t *n_task)
 {
