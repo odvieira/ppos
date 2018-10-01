@@ -87,13 +87,13 @@ static int scheduler(task_t *aux_task_list)
 
 static void dispatcher_body() // dispatcher é uma tarefa
 {
-    dispatcher.activations = dispatcher.activations + 1;
     current_task_id = DISP_ID;
     int next_id = MAIN_ID;
     task_t *aux_task;
 
     while (queue_size(common_user.task_list)) //
     {
+        dispatcher.activations = dispatcher.activations + 1;
         aux_task = (task_t*)(common_user.task_list);
         next_id = scheduler((task_t*)common_user.task_list); // scheduler é uma função
 
