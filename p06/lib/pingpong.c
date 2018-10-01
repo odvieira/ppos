@@ -87,6 +87,7 @@ static int scheduler(task_t *aux_task_list)
 
 static void dispatcher_body() // dispatcher é uma tarefa
 {
+    dispatcher.activations = dispatcher.activations + 1;
     current_task_id = DISP_ID;
     int next_id = MAIN_ID;
     task_t *aux_task;
