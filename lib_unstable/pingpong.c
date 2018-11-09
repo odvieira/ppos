@@ -5,17 +5,15 @@
 #define DISP_ID 1
 #define ROOT_ID 0
 
-static time_t start_os,
-       now;
-
 unsigned int current_task_id = MAIN_ID, // Identification of the task that is being executed
              running_tasks = MAIN_ID, // Number of running tasks in a moment
              created_tasks = MAIN_ID,
              created_users = ROOT_ID,
-             quantum = 20;
+             quantum = 20,
+             clock_var = 0;
 
 boolean_t    verbose = false,	// Display info about task_switch() and task_exit() on stdout
-             time_show = false;
+             time_show = true;
 
 static user_t root, common_user;
 
@@ -87,11 +85,13 @@ static int scheduler(task_t *aux_task_list)
 
 static void dispatcher_body() // dispatcher é uma tarefa
 {
+    current_task_id = DISP_ID;
     int next_id = MAIN_ID;
     task_t *aux_task;
 
     while (queue_size(common_user.task_list)) //
     {
+        dispatcher.activations = dispatcher.activations + 1;
         aux_task = (task_t*)(common_user.task_list);
         next_id = scheduler((task_t*)common_user.task_list); // scheduler é uma função
 
@@ -111,6 +111,11 @@ static void dispatcher_body() // dispatcher é uma tarefa
         }
     }
 
+    dispatcher.total_time = abs(systime() - aux_task->start);
+    if(time_show == true)
+        printf("Task %d exit: execution time %d ms, processor time %d ms, %d activations\n", \
+               dispatcher.id, dispatcher.total_time, dispatcher.processor_time, dispatcher.activations);
+
     if(task_switch(&main_task) < 0)
     {
         if(verbose == true)
@@ -124,10 +129,13 @@ static void dispatcher_body() // dispatcher é uma tarefa
     task_exit(0) ; // encerra a tarefa dispatcher*/
 }
 
-static void task_change_owner(task_t* task, user_t* user)
+static int task_change_owner(task_t* task, user_t* user)
 {
     if(!user)
+    {
         printf("Erro[task_change_owner()] #1: user invalido\n");
+        return -1;
+    }
 
     task_t *aux_task = (task_t*)(task->owner->task_list);
 
@@ -140,9 +148,12 @@ static void task_change_owner(task_t* task, user_t* user)
         task->owner = user;
     }
     else
+    {
         printf("Erro[task_change_owner] #2: task nao encontrada\n");
+        return -1;
+    }
 
-    return;
+    return 0;
 }
 
 static int user_create(char *name, user_t *user)
@@ -239,6 +250,8 @@ static int task_owner(int task_id)
 
 void handler (int signum)
 {
+    clock_var++;
+
     if(quantum <= 0)
     {
         user_t* aux_user;
@@ -292,6 +305,9 @@ void pingpong_init ()
     if(verbose == true)
         printf("Main criada\n");
 
+    if(task_change_owner(&main_task, &common_user))
+        printf("Erro[pingpong_init() #]: Task_owner nao pode ser trocado para main");
+
     // DISPATCHER
     task_create(&dispatcher, (void*)dispatcher_body, NULL);
     task_change_owner(&dispatcher, &root);
@@ -307,9 +323,9 @@ void pingpong_init ()
     }
 
     // ajusta valores do temporizador
-    timer.it_value.tv_usec = 1 ;      // primeiro disparo, em micro-segundos
+    timer.it_value.tv_usec = 1000 ;      // primeiro disparo, em micro-segundos
     //timer.it_value.tv_sec  = 3 ;      // primeiro disparo, em segundos
-    timer.it_interval.tv_usec = 20 ;   // disparos subsequentes, em micro-segundos
+    timer.it_interval.tv_usec = 1000 ;   // disparos subsequentes, em micro-segundos
     //timer.it_interval.tv_sec  = 20;   // disparos subsequentes, em segundos
 
     // arma o temporizador ITIMER_REAL (vide man setitimer)
@@ -375,6 +391,11 @@ int task_create (task_t *n_task, void (*start_func)(void *), void *arg)
 
 void task_exit (int exitCode)
 {
+    if(queue_size(common_user.task_list) != 1 && task_id() == MAIN_ID)
+    {
+        task_yield();
+    }
+
     user_t *aux_user;
 
     if(task_owner(task_id()) == root.id)
@@ -395,11 +416,11 @@ void task_exit (int exitCode)
 
     if(aux_task->id == current_task_id)
     {
-        aux_task->total_time = abs(systime() - aux_task->start);
+        aux_task->total_time = systime() - aux_task->start;
         if(time_show == true)
-            printf("Task %d exit: execution time %d ms, processor time %ld ms, %d activations\n", aux_task->id, aux_task->total_time, aux_task->processor_time, aux_task->activations);
-        //free(aux_task->context);
-        //aux_task->context = NULL;
+            printf("Task %d exit: execution time %d ms, processor time %d ms, %d activations\n", \
+                   aux_task->id, aux_task->total_time, aux_task->processor_time, aux_task->activations);
+
         aux_task = (task_t*) queue_remove(&(aux_user->task_list), (queue_t*)aux_task);
         free(aux_task->next);
         free(aux_task->prev);
@@ -419,13 +440,17 @@ void task_exit (int exitCode)
     }
 
     if(!(current_task_id = DISP_ID) || swapcontext(ext_task.context, dispatcher.context) < 0)
-            perror("nao foi possivel voltar para o dispatcher\n");
+        perror("nao foi possivel voltar para o dispatcher\n");
 
-        return;
+    return;
 }
 
 int task_switch (task_t *n_task)
 {
+    /***
+    VERIFICAÇÃO DESCONTINUADA,
+    SUBSTITUIDA POR UMA VERIFICAÇÃO NO INICIO DA FUNCAO TASK_EXIT(INT);
+
     if(n_task->id == MAIN_ID)
     {
         if(verbose)
@@ -439,6 +464,7 @@ int task_switch (task_t *n_task)
 
         return 0;
     }
+    ***/
 
 
     user_t *aux_user;
@@ -504,9 +530,9 @@ int task_id ()
     return current_task_id;
 }
 
-void task_setprio (task_t *task, int prio)
+void task_setprio (task_t *n_task, int prio)
 {
-    if(task == NULL)
+    if(n_task == NULL)
     {
         if(this_task_is_suspended(task_id()) == false)
         {
@@ -545,13 +571,13 @@ void task_setprio (task_t *task, int prio)
     }
     else
     {
-        task->priority = prio;
+        n_task->priority = prio;
     }
 }
 
-int task_getprio (task_t *task)
+int task_getprio (task_t *n_task)
 {
-    if(task==NULL)
+    if(n_task==NULL)
     {
         if(this_task_is_suspended(task_id()) == false)
         {
@@ -586,7 +612,7 @@ int task_getprio (task_t *task)
         }
     }
 
-    return task->priority;
+    return n_task->priority;
 }
 
 void task_suspend (task_t *n_task, task_t **queue)
@@ -595,7 +621,6 @@ void task_suspend (task_t *n_task, task_t **queue)
     queue_append(&suspended_tasks, queue_remove((queue_t**)(&(n_task->owner->task_list)), (queue_t*)n_task));
     return;
 }
-void task_suspend (task_t *n_task, task_t **queue) ;
 
 void task_resume (task_t *n_task)
 {
@@ -605,6 +630,64 @@ void task_resume (task_t *n_task)
 
 unsigned int systime()
 {
-    now = time(&now);
-    return ((now - start_os)%60) * 1000;
+    return clock_var;
+}
+
+int task_join (task_t *n_task)
+{
+    if(n_task->id == task_id())
+    {
+        perror("task_join(): DEADLOCK DETECTED [CALLER = TARGET]");
+        return -1;
+    }
+
+    boolean_t current_task_is_joinable = false;
+
+    user_t *aux_user;
+
+    if(this_task_is_suspended(task_id()) == false)
+    {
+        if(root.task_list && task_owner(task_id()) == root.id)
+        {
+            aux_user = &root;
+        }
+        else if(common_user.task_list && task_owner(task_id()) == common_user.id)
+        {
+            aux_user = &common_user;
+        }
+        else
+        {
+            perror("task_join(): TASK INVALIDA #1");
+            return -1;
+        }
+
+        task_t *aux_task = (task_t*)(aux_user->task_list);
+
+        while((queue_t*)(aux_task->next) != aux_user->task_list && current_task_id != aux_task->id)
+            aux_task = aux_task->next;
+
+        if(current_task_id == aux_task->id)
+        {
+            if(aux_task->joinable)
+                current_task_is_joinable = true;
+            else
+            {
+                perror("task_join(): NOT JOINABLE TARGET");
+                return -1;
+            }
+
+            if(aux_task->joined_to_id == n_task->id)
+            {
+                perror("task_join(): DEADLOCK DETECTED #2 aux_task->joined_to_id == n_task->id");
+                return -1;
+            }
+
+        }
+    }
+    else
+    {
+        //TODO READ $ man pthread_join
+    }
+
+    return 0;
 }

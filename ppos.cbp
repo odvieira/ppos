@@ -31,19 +31,15 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="p02/backup_lib/datatypes.h" />
-		<Unit filename="p02/backup_lib/pingpong.c">
+		<Unit filename="lib_unstable/datatypes.h" />
+		<Unit filename="lib_unstable/pingpong.c">
 			<Option compilerVar="CC" />
-			<Option compile="0" />
-			<Option link="0" />
 		</Unit>
-		<Unit filename="p02/backup_lib/pingpong.h" />
-		<Unit filename="p02/backup_lib/queue.c">
+		<Unit filename="lib_unstable/pingpong.h" />
+		<Unit filename="lib_unstable/queue.c">
 			<Option compilerVar="CC" />
-			<Option compile="0" />
-			<Option link="0" />
 		</Unit>
-		<Unit filename="p02/backup_lib/queue.h" />
+		<Unit filename="lib_unstable/queue.h" />
 		<Unit filename="p02/src/contexts.c">
 			<Option compilerVar="CC" />
 			<Option compile="0" />
@@ -84,15 +80,6 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="p06/lib/datatypes.h" />
-		<Unit filename="p06/lib/pingpong.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="p06/lib/pingpong.h" />
-		<Unit filename="p06/lib/queue.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="p06/lib/queue.h" />
 		<Unit filename="p06/src/pingpong-contab-prio.c">
 			<Option compilerVar="CC" />
 			<Option compile="0" />
@@ -103,16 +90,22 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="p07/lib/datatypes.h" />
 		<Unit filename="p07/lib/pingpong.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
-		<Unit filename="p07/lib/pingpong.h" />
 		<Unit filename="p07/lib/queue.c">
 			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
 		</Unit>
-		<Unit filename="p07/lib/queue.h" />
 		<Unit filename="p07/src/pingpong-maintask.c">
+			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="p08/pingpong-join.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

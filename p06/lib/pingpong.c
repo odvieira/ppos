@@ -5,7 +5,7 @@
 #define DISP_ID 1
 #define ROOT_ID 0
 
-static time_t start_os,
+static unsigned int start_os,
        now;
 
 unsigned int current_task_id = MAIN_ID, // Identification of the task that is being executed

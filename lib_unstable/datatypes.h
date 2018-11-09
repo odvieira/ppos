@@ -1,6 +1,6 @@
 // PingPongOS - PingPong Operating System
 // Prof. Carlos A. Maziero, DAINF UTFPR
-// VersÃ£o 1.0 -- MarÃ§o de 2015
+// Versão 1.0 -- Março de 2015
 //
 // Estruturas de dados internas do sistema operacional
 
@@ -43,34 +43,36 @@ typedef struct task_t
     short int priority;
     status_t status;
     int age;
-    time_t processor_time;
-    time_t start;
+    unsigned int processor_time;
+    unsigned int start;
     unsigned int total_time;
     unsigned int activations;
+    int joined_to_id;
+    boolean_t joinable;
 } task_t;
 
-// estrutura que define um semÃ¡foro
+// estrutura que define um semáforo
 typedef struct
 {
-    // preencher quando necessÃ¡rio
+    // preencher quando necessário
 } semaphore_t ;
 
 // estrutura que define um mutex
 typedef struct
 {
-    // preencher quando necessÃ¡rio
+    // preencher quando necessário
 } mutex_t ;
 
 // estrutura que define uma barreira
 typedef struct
 {
-    // preencher quando necessÃ¡rio
+    // preencher quando necessário
 } barrier_t ;
 
 // estrutura que define uma fila de mensagens
 typedef struct
 {
-    // preencher quando necessÃ¡rio
+    // preencher quando necessário
 } mqueue_t ;
 
 #endif

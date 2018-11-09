@@ -13,10 +13,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include<string.h>
+#include <string.h>
 #include <signal.h>
 #include <sys/time.h>
-#include<time.h>
+#include <time.h>
 
 // funções gerais ==============================================================
 

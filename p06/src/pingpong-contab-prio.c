@@ -6,7 +6,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "../lib/pingpong.h"
+//#include "../lib/pingpong.h"
+#include "../../lib_unstable/pingpong.h"
+
 
 task_t Pang, Peng, Ping, Pong, Pung ;
 
