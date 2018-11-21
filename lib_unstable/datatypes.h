@@ -14,6 +14,12 @@
 
 #include "queue.h"
 
+typedef struct int_list
+{
+    struct int_list *prev, *next; // aponta para o elemento anterior e seguinte na fila respectivamente
+    int value;
+} int_list;
+
 typedef struct user_t
 {
     unsigned int id;
@@ -47,8 +53,8 @@ typedef struct task_t
     unsigned int start;
     unsigned int total_time;
     unsigned int activations;
-    int joined_to_id;
-    boolean_t joinable;
+    int dependency;
+    int_list *dependent;
 } task_t;
 
 // estrutura que define um semáforo

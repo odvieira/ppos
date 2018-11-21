@@ -617,7 +617,6 @@ int task_getprio (task_t *n_task)
 
 void task_suspend (task_t *n_task, task_t **queue)
 {
-    //queue_append((queue_t**)queue, queue_remove((queue_t**)(&(n_task->owner->task_list)), (queue_t*)n_task));
     queue_append(&suspended_tasks, queue_remove((queue_t**)(&(n_task->owner->task_list)), (queue_t*)n_task));
     return;
 }
@@ -635,59 +634,112 @@ unsigned int systime()
 
 int task_join (task_t *n_task)
 {
+    if(n_task == NULL)
+    {
+        perror("task_join(): INVALID TARGET");
+        return -1;
+    }
+
     if(n_task->id == task_id())
     {
         perror("task_join(): DEADLOCK DETECTED [CALLER = TARGET]");
         return -1;
     }
 
-    boolean_t current_task_is_joinable = false;
+    user_t *caller_user;
 
-    user_t *aux_user;
-
-    if(this_task_is_suspended(task_id()) == false)
+    if(root.task_list && task_owner(task_id()) == root.id)
     {
-        if(root.task_list && task_owner(task_id()) == root.id)
-        {
-            aux_user = &root;
-        }
-        else if(common_user.task_list && task_owner(task_id()) == common_user.id)
-        {
-            aux_user = &common_user;
-        }
-        else
-        {
-            perror("task_join(): TASK INVALIDA #1");
-            return -1;
-        }
-
-        task_t *aux_task = (task_t*)(aux_user->task_list);
-
-        while((queue_t*)(aux_task->next) != aux_user->task_list && current_task_id != aux_task->id)
-            aux_task = aux_task->next;
-
-        if(current_task_id == aux_task->id)
-        {
-            if(aux_task->joinable)
-                current_task_is_joinable = true;
-            else
-            {
-                perror("task_join(): NOT JOINABLE TARGET");
-                return -1;
-            }
-
-            if(aux_task->joined_to_id == n_task->id)
-            {
-                perror("task_join(): DEADLOCK DETECTED #2 aux_task->joined_to_id == n_task->id");
-                return -1;
-            }
-
-        }
+        caller_user = &root;
+    }
+    else if(common_user.task_list && task_owner(task_id()) == common_user.id)
+    {
+        caller_user = &common_user;
     }
     else
     {
-        //TODO READ $ man pthread_join
+        perror("task_join(): TASK INVALIDA #1");
+        return -1;
     }
 
-    return 0;
+    task_t *caller_task = (task_t*)(caller_user->task_list);
+
+    while((queue_t*)(caller_task->next) != caller_user->task_list && current_task_id != caller_task->id)
+        caller_task = caller_task->next;
+
+    if(current_task_id == caller_task->id)
+    {
+        /*        task_t *dependency_iterator = caller_task->dependency;
+
+                while(dependency_iterator->next!=caller_task->dependency && caller_task->dependency != n_task->id)
+                {
+                    dependency_iterator = dependency_iterator->next;
+                }*/
+
+        if(caller_task->dependency == n_task->id)
+        {
+            perror("task_join(): DEADLOCK DETECTED #2 aux_task->joined_to_id == n_task->id");
+            return -1;
+        }
+
+        caller_task->dependency = n_task->id;
+        queue_append((queue_t**)(&(n_task->dependent)), caller_task->id);
+
+        return 0;
+    }
+
+    perror("task_join(): TASK NOT FOUND");
+    return -1;
+}
+
+static int task_wake()
+{
+    user_t *caller_user;
+
+    if(root.task_list && task_owner(task_id()) == root.id)
+    {
+        caller_user = &root;
+    }
+    else if(common_user.task_list && task_owner(task_id()) == common_user.id)
+    {
+        caller_user = &common_user;
+    }
+    else
+    {
+        perror("task_join(): TASK INVALIDA #1");
+        return -1;
+    }
+
+    task_t *caller_task = (task_t*)(caller_user->task_list),
+            *iterator_task = suspended_tasks;
+
+    while((queue_t*)(caller_task->next) != caller_user->task_list && current_task_id != caller_task->id)
+        caller_task = caller_task->next;
+
+    if(current_task_id == caller_task->id && suspended_tasks != NULL && caller_task->dependent != NULL)
+    {
+        if(verbose)
+            printf("Existe task dependente\n");
+        int_list *iterator_id = caller_task->dependent;
+
+        while(suspended_tasks != NULL && iterator_task->next != suspended_tasks)
+        {
+            while(iterator_id->next->value != caller_task->dependent->value)
+            {
+                if(iterator_id == iterator_task->id)
+                {
+
+                    iterator_task->dependency = NULL;
+                    queue_remove((queue_t **)(&(caller_task->dependent)), iterator_id);
+                    task_resume(iterator_task);
+
+                    if(verbose)
+                        printf("Tirou a Task %d da lista de suspensas \n", iterator_id->value);
+                }
+                iterator_id = iterator_id->next;
+            }
+            iterator_task = iterator_task->next;
+        }
+
+    }
 }
