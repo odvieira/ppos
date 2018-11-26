@@ -617,6 +617,8 @@ int task_getprio (task_t *n_task)
 
 void task_suspend (task_t *n_task, task_t **queue)
 {
+    //<<<<<<<<<<<<<<<<<<<<
+
     queue_append(&suspended_tasks, queue_remove((queue_t**)(&(n_task->owner->task_list)), (queue_t*)n_task));
     return;
 }
@@ -669,20 +671,16 @@ int task_join (task_t *n_task)
 
     if(current_task_id == caller_task->id)
     {
-        /*        task_t *dependency_iterator = caller_task->dependency;
-
-                while(dependency_iterator->next!=caller_task->dependency && caller_task->dependency != n_task->id)
-                {
-                    dependency_iterator = dependency_iterator->next;
-                }*/
-
-        if(caller_task->dependency == n_task->id)
+        if(n_task->dependency == caller_task->id)
         {
-            perror("task_join(): DEADLOCK DETECTED #2 aux_task->joined_to_id == n_task->id");
+            perror("task_join(): DEADLOCK DETECTED #2")
             return -1;
         }
 
         caller_task->dependency = n_task->id;
+
+        task_suspend(caller_task);//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
         queue_append((queue_t**)(&(n_task->dependent)), caller_task->id);
 
         return 0;
