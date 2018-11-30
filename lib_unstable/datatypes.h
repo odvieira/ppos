@@ -16,7 +16,7 @@
 
 typedef struct int_list
 {
-    struct int_list *prev, *next; // aponta para o elemento anterior e seguinte na fila respectivamente
+    struct int_list *prev, *next; //Aponta para o elemento anterior e seguinte na fila respectivamente
     int value;
 } int_list;
 
@@ -55,6 +55,7 @@ typedef struct task_t
     unsigned int activations;
     int dependency;
     int_list *dependent;
+    int exit_code;
 } task_t;
 
 // estrutura que define um semáforo

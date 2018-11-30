@@ -1,0 +1,3 @@
+#!/bin/sh
+rm -r ./bin ./obj ./ppos.depend ./ppos.layout
+xdg-open ./ppos.cbp

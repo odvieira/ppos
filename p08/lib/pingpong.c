@@ -22,7 +22,8 @@ static task_t dispatcher,
        main_task,
        ext_task;
 
-static queue_t *suspended_tasks;
+static queue_t  *suspended_tasks,
+       *sleeping_tasks;
 
 // estrutura que define um tratador de sinal (deve ser global ou static)
 struct sigaction action;
@@ -121,6 +122,14 @@ static task_t* task_getsus(int tid)
 static int task_wake()
 {
     task_t  *caller_task = task_getcurrent();
+
+    if(queue_size((queue_t*)(caller_task->dependent)) == 0)
+    {
+        if(verbose)
+            printf("No one to wake\n");
+
+        return 0;
+    }
 
     if(current_task_id == caller_task->id && suspended_tasks != NULL && caller_task->dependent != NULL)
     {
@@ -517,10 +526,9 @@ int task_create (task_t *n_task, void (*start_func)(void *), void *arg)
 
 void task_exit (int exitCode)
 {
-    if(queue_size(common_user.task_list) != 1 && task_id() == MAIN_ID)
-    {
-        task_yield();
-    }
+    task_t* aux_task = task_getcurrent();
+
+    aux_task->exit_code = exitCode;
 
     if(task_wake() < 0)
     {
@@ -528,7 +536,10 @@ void task_exit (int exitCode)
         return;
     }
 
-    task_t* aux_task = task_getcurrent();
+    if(queue_size(common_user.task_list) > 1 && task_id() == MAIN_ID)
+    {
+        task_yield();
+    }
 
     if(aux_task->id == current_task_id)
     {
@@ -723,6 +734,12 @@ int task_join (task_t *n_task)
 
     task_t* caller_task = task_getcurrent();
 
+    if(!caller_task)
+    {
+        perror("task_join(): INVALID CALLER [SHOULD NEVER HAPPEN]\n");
+        return -1; // RETURNING TO WHERE??
+    }
+
     if(current_task_id == caller_task->id)
     {
         if(verbose)
@@ -753,5 +770,12 @@ int task_join (task_t *n_task)
         task_yield();
     }
 
-    return 0;
+    return n_task->exit_code;
+}
+
+void task_sleep (int t)
+{
+    sleeping_tasks = NULL;
+
+    return;
 }
