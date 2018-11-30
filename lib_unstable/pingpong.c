@@ -685,7 +685,7 @@ void task_suspend (task_t *n_task, task_t **queue)
 
     if(verbose)
     {
-        queue_print("TIDs suspended: ", (queue_t*)suspended_tasks, (void*)task_print);
+        queue_print("TIDs suspended in this queue: ", *queue, (void*)task_print);
     }
 
     return;
@@ -775,7 +775,7 @@ int task_join (task_t *n_task)
 
 void task_sleep (int t)
 {
-    sleeping_tasks = NULL;
+    task_suspend(NULL, sleeping_tasks);
 
     return;
 }
