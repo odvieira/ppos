@@ -56,6 +56,7 @@ typedef struct task_t
     int dependency;
     int_list *dependent;
     int exit_code;
+    unsigned int sleep_time;
 } task_t;
 
 // estrutura que define um semáforo

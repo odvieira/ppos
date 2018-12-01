@@ -10,10 +10,9 @@ unsigned int current_task_id = MAIN_ID, // Identification of the task that is be
              created_tasks = MAIN_ID,
              created_users = ROOT_ID,
              quantum = 20,
-             clock_var = 0,
-             atom_lock = 0;
+             clock_var = 0;
 
-boolean_t    verbose = false,	// Display info about task_switch() and task_exit() on stdout
+boolean_t    verbose = true,	// Display info about task_switch() and task_exit() on stdout
              time_show = false;
 
 static user_t root, common_user;
@@ -104,6 +103,21 @@ static task_t* task_getcurrent()
     }
 }
 
+static task_t* task_getslp(int tid)
+{
+    task_t* it = (task_t*)sleeping_tasks;
+
+    while(it->next != (task_t*)sleeping_tasks && it->id != tid)
+        it = it->next;
+
+    if(it->id == tid)
+        return it;
+
+    //perror("task_getsus(): TASK NOT FOUND\n");
+
+    return NULL;
+}
+
 static task_t* task_getsus(int tid)
 {
     task_t* it = (task_t*)suspended_tasks;
@@ -114,7 +128,7 @@ static task_t* task_getsus(int tid)
     if(it->id == tid)
         return it;
 
-    perror("task_getsus(): TASK NOT FOUND\n");
+    //perror("task_getsus(): TASK NOT FOUND\n");
 
     return NULL;
 }
@@ -133,7 +147,6 @@ static int task_wake()
 
     if(current_task_id == caller_task->id && suspended_tasks != NULL && caller_task->dependent != NULL)
     {
-        atom_lock = 1;
         if(verbose)
         {
             printf("task_wake(): Exists an dependent task, waking it...\n");
@@ -208,7 +221,6 @@ static int task_wake()
         if(verbose)
             printf("task_wake(): finalizado\n");
 
-        atom_lock = 0;
     }
 
     return 0;
@@ -262,32 +274,87 @@ static int scheduler(task_t *aux_task_list)
     return id;
 }
 
+void task_wakeSleepingTask (task_t *n_task)
+{
+    n_task->status = READY;
+    queue_append((queue_t**)(&(n_task->owner->task_list)), queue_remove(&sleeping_tasks, (queue_t*)n_task));
+
+    return;
+}
+
+static void check_sleeping_tasks()
+{
+    task_t  *it = (task_t*)sleeping_tasks,
+            *aux;
+
+    while(sleeping_tasks != NULL && it->next != (task_t*)sleeping_tasks)
+    {
+        if(systime() >= it->sleep_time)
+        {
+            if(verbose)
+            {
+                queue_print("TIDs sleeping: ", sleeping_tasks, (void*)task_print);
+                printf("sleep time over for tid[%d]\n", it->id);
+            }
+
+            aux = it->next;
+            task_wakeSleepingTask(it);
+
+                        if(verbose)
+            {
+                queue_print("TIDs sleeping: ", sleeping_tasks, (void*)task_print);
+                printf("sleep time over for tid[%d]\n", it->id);
+            }
+
+
+        }
+
+        it = aux;
+        printf("it->next[%d]\n", it->next->id);
+    }
+
+    if(sleeping_tasks != NULL && systime() >= it->sleep_time)
+    {
+        if(verbose)
+        {
+            queue_print("TIDs sleeping: ", sleeping_tasks, (void*)task_print);
+            printf("sleep time over for tid[%d]\n", it->id);
+        }
+        task_wakeSleepingTask(it);
+    }
+}
+
 static void dispatcher_body() // dispatcher é uma tarefa
 {
     current_task_id = DISP_ID;
     int next_id = MAIN_ID;
     task_t *aux_task;
 
-    while (queue_size(common_user.task_list)) //
+    while (queue_size(common_user.task_list) || queue_size(sleeping_tasks) || queue_size(suspended_tasks)) //
     {
-        dispatcher.activations = dispatcher.activations + 1;
-        aux_task = (task_t*)(common_user.task_list);
-        next_id = scheduler((task_t*)common_user.task_list); // scheduler é uma função
-
-        if(verbose == true)
-            printf("next_id obtido %d\n", next_id);
-
-        while(aux_task->next->id != ((task_t*)(common_user.task_list))->id && next_id != aux_task->id)
-            aux_task = aux_task->next;
-
-        if(next_id != aux_task->id)
+        if(queue_size(common_user.task_list))
         {
-            task_switch(&dispatcher);
+
+            dispatcher.activations = dispatcher.activations + 1;
+            aux_task = (task_t*)(common_user.task_list);
+            next_id = scheduler((task_t*)common_user.task_list); // scheduler é uma função
+
+            if(verbose == true)
+                printf("next_id obtido %d\n", next_id);
+
+            while(aux_task->next->id != ((task_t*)(common_user.task_list))->id && next_id != aux_task->id)
+                aux_task = aux_task->next;
+
+            if(next_id != aux_task->id)
+            {
+                task_switch(&dispatcher);
+            }
+            else
+            {
+                task_switch(aux_task); // transfere controle para a tarefa "aux_task"
+            }
         }
-        else
-        {
-            task_switch(aux_task); // transfere controle para a tarefa "aux_task"
-        }
+        check_sleeping_tasks();
     }
 
     dispatcher.total_time = abs(systime() - aux_task->start);
@@ -410,7 +477,7 @@ void handler (int signum)
             aux_task->activations = aux_task->activations + 1;
             quantum = 20;
 
-            if(task_owner(task_id()) == common_user.id && !atom_lock)
+            if(task_owner(task_id()) == common_user.id)
                 task_yield();
         }
 
@@ -575,7 +642,7 @@ void task_exit (int exitCode)
 
 int task_switch (task_t *n_task)
 {
-    if(this_task_is_suspended(task_id()) == false)
+    if(task_owner(task_id()) != -1)
     {
         task_t* aux_task = task_getcurrent();
 
@@ -593,6 +660,12 @@ int task_switch (task_t *n_task)
     else
     {
         task_t* aux_task = task_getsus(task_id());
+
+        if(!aux_task)
+        {
+            getchar();
+            aux_task = task_getslp(task_id());
+        }
 
         if(current_task_id == aux_task->id)
         {
@@ -681,11 +754,12 @@ void task_suspend (task_t *n_task, task_t **queue)
             printf("task_suspend(): NEW suspended queue task initialized\n");
     }
 
-    queue_append(&suspended_tasks, queue_remove((queue_t**)(&(n_task->owner->task_list)), (queue_t*)n_task));
+    n_task->status = SUSPENDED;
+    queue_append((queue_t**)(queue), queue_remove((queue_t**)(&(n_task->owner->task_list)), (queue_t*)n_task));
 
     if(verbose)
     {
-        queue_print("TIDs suspended in this queue: ", *queue, (void*)task_print);
+        queue_print("TIDs suspended in this queue: ", (queue_t*)*queue, (void*)task_print);
     }
 
     return;
@@ -702,6 +776,7 @@ void task_resume (task_t *n_task)
         return;
     }
 
+    n_task->status = READY;
     queue_append((queue_t**)(&(n_task->owner->task_list)), queue_remove(&suspended_tasks, (queue_t*)n_task));
 
     return;
@@ -753,8 +828,6 @@ int task_join (task_t *n_task)
             return -1;
         }
 
-        atom_lock = 1;
-
         int_list* dep = (int_list*)malloc(sizeof(int_list));
         dep->next = dep->prev = NULL;
         dep->value = caller_task->id;
@@ -765,8 +838,6 @@ int task_join (task_t *n_task)
 
         queue_append((queue_t**)(&(n_task->dependent)), (queue_t*)dep);
 
-        atom_lock = 0;
-
         task_yield();
     }
 
@@ -775,7 +846,11 @@ int task_join (task_t *n_task)
 
 void task_sleep (int t)
 {
-    task_suspend(NULL, sleeping_tasks);
+    task_t *caller = task_getcurrent();
 
-    return;
+    caller->sleep_time = systime() + t * 1000;
+
+    task_suspend(caller, (task_t**)(&(sleeping_tasks)));
+
+    task_yield();
 }
