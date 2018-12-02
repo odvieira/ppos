@@ -539,7 +539,7 @@ void task_setprio (task_t *task, int prio)
             while((queue_t*)(aux_task->next) != aux_user->task_list && current_task_id != aux_task->id)
                 aux_task = aux_task->next;
 
-            aux_task->priority=prio;
+            aux_task->priority=prio * (-1);
         }
         else
         {
@@ -548,12 +548,12 @@ void task_setprio (task_t *task, int prio)
             while((queue_t*)(aux_task->next) != suspended_tasks && current_task_id != aux_task->id)
                 aux_task = aux_task->next;
 
-            aux_task->priority=prio;
+            aux_task->priority=prio * (-1);
         }
     }
     else
     {
-        task->priority = prio;
+        task->priority = prio * (-1);
     }
 }
 
@@ -581,7 +581,7 @@ int task_getprio (task_t *task)
             while((queue_t*)(aux_task->next) != aux_user->task_list && current_task_id != aux_task->id)
                 aux_task = aux_task->next;
 
-            return aux_task->priority;
+            return aux_task->priority * (-1);
         }
         else
         {
@@ -590,11 +590,11 @@ int task_getprio (task_t *task)
             while((queue_t*)(aux_task->next) != suspended_tasks && current_task_id != aux_task->id)
                 aux_task = aux_task->next;
 
-            return aux_task->priority;
+            return aux_task->priority * (-1);
         }
     }
 
-    return task->priority;
+    return task->priority * (-1);
 }
 
 void task_suspend (task_t *n_task, task_t **queue)

@@ -1,0 +1,24 @@
+#!/bin/sh
+
+echo "Executando configure"
+./configure
+
+echo "Executando os programas"
+for i in p*
+do
+	if [ -d ${i} ]
+	then
+		echo "Entrando em ${i}/"
+		cd ${i}/;
+		if [ -f Makefile ]
+		then
+			echo "Executando..."
+			for x in ppos_*
+			do
+			  ./${x} | tee output_${x}.txt
+			done
+		fi
+		echo "Saindo de ${i}/"
+		cd ..
+	fi
+done

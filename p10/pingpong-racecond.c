@@ -8,7 +8,7 @@
 #endif
 
 #define NUMTASKS 30
-#define NUMSTEPS 10000000
+#define NUMSTEPS 100000
 
 task_t task[NUMTASKS] ;
 semaphore_t  s ;

@@ -85,19 +85,15 @@ static task_t* task_getcurrent()
     }
     else
     {
-        if(verbose == true)
+        if(verbose)
         {
-            queue_print("[task_switch()]\troot TID: ", root.task_list, (void*)task_print);
-            queue_print("[task_switch()]\tuser TID: ", common_user.task_list, (void*)task_print);
-            queue_print("[task_switch()]\tsusp TID: ", suspended_tasks, (void*)task_print);
-            queue_print("[task_switch()]\tslep TID: ", sleeping_tasks, (void*)task_print);
-
-            printf("task_getcurrent: trying to get tid[%d]\n", current_task_id);
-
-            printf("task_getcurrent: invalid task\n");
+            if(task_owner(task_id()) == -1)
+                printf("There's no current task\n");
         }
 
-        setcontext(dispatcher.context);
+        task_yield();
+
+        return NULL;
     }
 
     task_t *c_task = (task_t*)(user->task_list);
@@ -114,6 +110,45 @@ static task_t* task_getcurrent()
         perror("task_getcurrent(): TASK NOT FOUND");
         return NULL;
     }
+}
+
+static task_t* task_getslp(int tid)
+{
+    task_t* it = (task_t*)sleeping_tasks;
+
+    if(verbose)
+    {
+        printf("Searching tid[%d] in sleeping_tasks (%p)\n", tid, (void *)&sleeping_tasks);
+        queue_print("TIDs sleeping: ", sleeping_tasks, (void*)task_print);
+    }
+
+    while(it->next != (task_t*)sleeping_tasks && it->id != tid)
+        it = it->next;
+
+    if(it->id == tid)
+        return it;
+
+    if(verbose)
+    {
+        printf("task_getslp(): TASK NOT FOUND\n");
+    }
+
+    return NULL;
+}
+
+static task_t* task_getsus(int tid)
+{
+    task_t* it = (task_t*)suspended_tasks;
+
+    while(it->next != (task_t*)suspended_tasks && it->id != tid)
+        it = it->next;
+
+    if(it->id == tid)
+        return it;
+
+    //perror("task_getsus(): TASK NOT FOUND\n");
+
+    return NULL;
 }
 
 static int task_wake()
@@ -456,19 +491,38 @@ static int main_task_create()
     return 0;
 }
 
+static boolean_t this_task_is_suspended(int task_id)
+{
+    task_t *aux_task;
+
+    aux_task = (task_t*)suspended_tasks;
+
+    if(!suspended_tasks)
+        return false;
+
+    while((queue_t*) (aux_task->next) != suspended_tasks && aux_task->id != task_id)
+        aux_task = aux_task->next;
+
+    if(aux_task->id == task_id)
+        return true;
+
+
+    return false;
+
+}
+
 void handler (int signum)
 {
     clock_var++;
     time_to_check_sleep--;
 
-    task_t* aux_task = task_getcurrent();
-
-    aux_task->processor_time += 1;
-
     if(quantum <= 0)
     {
+        task_t* aux_task = task_getcurrent();
+
         if(aux_task->id == task_id())
         {
+            aux_task->processor_time += 20;
             aux_task->activations = aux_task->activations + 1;
             quantum = 20;
 
@@ -571,7 +625,6 @@ int task_create (task_t *n_task, void (*start_func)(void *), void *arg)
     n_task->age = 0;
     n_task->dependency = -1;
     n_task->dependent = NULL;
-    n_task->exit_code = 0;
 
     if(verbose == true)
     {
@@ -598,8 +651,7 @@ void task_exit (int exitCode)
 
     task_t* aux_task = task_getcurrent();
 
-    if(aux_task->exit_code == 0)
-        aux_task->exit_code = exitCode;
+    aux_task->exit_code = exitCode;
 
     if(verbose)
     {
@@ -721,6 +773,59 @@ int task_switch (task_t *n_task)
                 return -1;
         }
     }
+    else
+    {
+        /*
+        Este pedaço de codigo é potencialmente desnecessário.
+        Necessita de avaliação.
+        Foi substituído por condições nas callers(task_suspend,
+                                                     sem_down)
+        Esta abordagem apresentava dificuldades em detectar a origem
+        da chamada por isso tinha dificuldade para tratar os diferentes
+        tipos de suspensão
+        */
+
+        task_t* aux_task = task_getsus(task_id());
+
+        if(!aux_task)
+        {
+            aux_task = task_getslp(task_id());
+
+            if(verbose && aux_task)
+            {
+                printf("task_switch(): cid[%d] is sleeping [saving context even then]\n",\
+                       aux_task->id);
+            }
+        }
+        else if (verbose && aux_task)
+        {
+            printf("task_switch(): cid[%d] is suspended [saving context even then]\n",\
+                   aux_task->id);
+        }
+
+        if(!aux_task)
+        {
+            printf("task_switch(): INVALID TASK ID [%d]\n", task_id());
+            perror("task_switch():");
+            return -1;
+        }
+
+        if(current_task_id == aux_task->id)
+        {
+            if(verbose == true)
+                printf("c_tid = %d \t n_tid = %d\n",current_task_id, n_task->id);
+
+            current_task_id = DISP_ID;
+
+            if(verbose)
+                printf("int task_switch [SWAP]\n");
+
+            atom_lock = 0;
+
+            if(swapcontext(aux_task->context, dispatcher.context) < 0)
+                return -1;
+        }
+    }
 
     atom_lock = 0;
 
@@ -736,23 +841,29 @@ void task_setprio (task_t *n_task, int prio)
 {
     if(n_task == NULL)
     {
-        if(task_owner(current_task_id) != -1)
+        if(this_task_is_suspended(task_id()) == false)
         {
             n_task = task_getcurrent();
 
-            n_task->priority=prio * (-1);
+            n_task->priority=prio;
 
             return;
         }
         else
         {
-            perror("task_setprio\n");
-            exit(1);
+            task_t *aux_task = (task_t*)suspended_tasks;
+
+            while((queue_t*)(aux_task->next) != suspended_tasks && current_task_id != aux_task->id)
+                aux_task = aux_task->next;
+
+            aux_task->priority=prio;
+
+            return;
         }
     }
     else
     {
-        n_task->priority = prio * (-1);
+        n_task->priority = prio;
         return;
     }
 }
@@ -761,16 +872,22 @@ int task_getprio (task_t *n_task)
 {
     if(n_task==NULL)
     {
-        if(task_owner(task_id()) != -1)
+        if(this_task_is_suspended(task_id()) == false)
+        {
             n_task = task_getcurrent();
+        }
         else
         {
-            perror("task_getprio\n");
-            exit(1);
+            task_t *aux_task = (task_t*)suspended_tasks;
+
+            while((queue_t*)(aux_task->next) != suspended_tasks && current_task_id != aux_task->id)
+                aux_task = aux_task->next;
+
+            return aux_task->priority;
         }
     }
 
-    return n_task->priority * (-1);
+    return n_task->priority;
 }
 
 void task_suspend (task_t *n_task, task_t **queue)
@@ -967,12 +1084,8 @@ int sem_create(semaphore_t* s, int value)
 
 int sem_down(semaphore_t* s)
 {
-    if(verbose)
-        printf("sem_down START\n");
-
     if(!s)
     {
-        printf("sem_down: invalid semaphore\n");
         return -1;
     }
 
@@ -981,9 +1094,6 @@ int sem_down(semaphore_t* s)
     s->value = s->value - 1;
 
     task_t *current_task = task_getcurrent();
-
-    if(task_owner(current_task->id) == -1)
-        printf("sem_down: tid[%d] invalid\n", current_task->id);
 
     if(s->value < 0)
     {
@@ -998,18 +1108,14 @@ int sem_down(semaphore_t* s)
 
         if(verbose)
         {
-            printf("sem_down [%p]: semaphore full suspending tid[%d]\n",\
+            printf("sem_down [%p]: semaphore full { suspending tid[%d] }\n",\
                    s, current_task->id);
             printf("sem_down: c_tid = %d \t n_tid = %d\n",current_task_id, DISP_ID);
         }
 
         current_task_id = DISP_ID;
 
-        fflush(stdin);
-
         atom_lock = 0;
-
-        fflush(stdin);
 
         if(swapcontext(aux->context, dispatcher.context) < 0)
             return -1;
@@ -1027,24 +1133,14 @@ int sem_down(semaphore_t* s)
 
 int sem_up(semaphore_t* s)
 {
-    if(verbose)
-        printf("sem_up START\n");
-
     if(!s)
     {
-        printf("sem_up: invalid semaphore\n");
         return -1;
     }
 
     atom_lock = 1;
 
     s->value = s->value + 1;
-
-    if(verbose)
-    {
-        printf("sem_up [%p] by tid [%d]\n",\
-               s, current_task_id);
-    }
 
     if(s->value <= 0)
     {
@@ -1054,24 +1150,6 @@ int sem_up(semaphore_t* s)
         {
             aux = (task_t*) queue_remove((queue_t**)(&(s->sem_tasks)),\
                                          (queue_t*)aux);
-
-            if(aux)
-            {
-                aux->status = READY;
-
-                aux->exit_code = 0;
-
-                queue_append((queue_t**)(&(aux->owner->task_list)),\
-                             (queue_t*) aux);
-            }
-            else
-            {
-                printf("sem_up: can't get task from sem_tasks\n");
-
-                atom_lock = 0;
-
-                return -1;
-            }
         }
         else
         {
@@ -1080,6 +1158,13 @@ int sem_up(semaphore_t* s)
             return -1;
         }
 
+        aux->status = READY;
+
+        aux->exit_code = 0;
+
+        queue_append((queue_t**)(&(aux->owner->task_list)),\
+                     (queue_t*) aux);
+
         atom_lock = 0;
 
         task_yield();
@@ -1087,17 +1172,19 @@ int sem_up(semaphore_t* s)
 
     atom_lock = 0;
 
+    if(verbose)
+    {
+        printf("sem_up [%p] by tid [%d]\n",\
+               s, current_task_id);
+    }
+
     return 0;
 }
 
 int sem_destroy(semaphore_t *s)
 {
-    if(verbose)
-        printf("sem_destroy START\n");
-
     if(!s)
     {
-        printf("sem_destroy: invalid semaphore\n");
         return -1;
     }
 
@@ -1127,127 +1214,3 @@ int sem_destroy(semaphore_t *s)
     return 0;
 }
 
-int barrier_create (barrier_t *b, int N)
-{
-    atom_lock = 1;
-
-    if(!b)
-        b = (barrier_t*) malloc(sizeof(barrier_t));
-
-    b->total_size = N;
-
-    atom_lock = 0;
-
-    return 0;
-
-}
-
-int barrier_join (barrier_t *b)
-{
-    atom_lock = 1;
-
-    if(!b)
-    {
-        if(verbose)
-            printf("barrier_join: barreira inexistente ou destruida\n");
-
-        atom_lock = 0;
-
-        return -1;
-    }
-
-    task_t *current_task = task_getcurrent();
-
-    if(queue_size(b->barrier_tasks) < b->total_size)
-    {
-        current_task->status = SUSPENDED;
-
-        task_t *aux = (task_t*)queue_remove((queue_t**)(&(current_task->owner->task_list)),\
-                                            (queue_t*)current_task);
-
-        queue_append((queue_t**)(&(b->barrier_tasks)), (queue_t*)aux);
-
-        current_task_id = DISP_ID;
-
-        fflush(stdin);
-
-        atom_lock = 0;
-
-        fflush(stdin);
-
-        if(swapcontext(aux->context, dispatcher.context) < 0)
-            return -1;
-    }
-    else
-    {
-        task_t  *it, *aux;
-
-        while(b->barrier_tasks)
-        {
-            it = (task_t*)b->barrier_tasks;
-
-            aux = (task_t*)queue_remove((queue_t**)(&(b->barrier_tasks)),\
-                                        (queue_t*)it);
-
-            aux->status = READY;
-
-            queue_append((queue_t**)(&(aux->owner->task_list)), (queue_t*)aux);
-        }
-
-
-        current_task_id = DISP_ID;
-
-        fflush(stdin);
-
-        atom_lock = 0;
-
-        fflush(stdin);
-
-        if(swapcontext(current_task->context, dispatcher.context) < 0)
-            return -1;
-    }
-
-    return 0;
-}
-
-int barrier_destroy (barrier_t *b)
-{
-    if(!b)
-    {
-        if(verbose)
-            printf("barrier_destroy: b is null\n");
-
-        return -1;
-    }
-
-    atom_lock = 1;
-
-    task_t  *it, *aux;
-
-    while(b->barrier_tasks)
-    {
-        it = (task_t*)b->barrier_tasks;
-
-        aux = (task_t*)queue_remove((queue_t**)(&(b->barrier_tasks)),\
-                                    (queue_t*)it);
-
-        aux->status = READY;
-        aux->exit_code = -1;
-
-        queue_append((queue_t**)(&(aux->owner->task_list)), (queue_t*)aux);
-    }
-
-    b->total_size = 0;
-
-    current_task_id = DISP_ID;
-
-    fflush(stdin);
-
-    atom_lock = 0;
-
-    fflush(stdin);
-
-    task_yield();
-
-    return 0;
-}
