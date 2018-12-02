@@ -100,7 +100,17 @@
 			<Option compile="0" />
 			<Option link="0" />
 		</Unit>
-		<Unit filename="p09/pingpong-sleep.c">
+		<Unit filename="p09/src/pingpong-sleep.c">
+			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="p10/pingpong-racecond.c">
+			<Option compilerVar="CC" />
+			<Option compile="0" />
+			<Option link="0" />
+		</Unit>
+		<Unit filename="p10/pingpong-semaphore.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>

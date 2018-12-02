@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "pingpong.h"
+#include "../lib_unstable/pingpong.h"
 
 // operating system check
 #if defined(_WIN32) || (!defined(__unix__) && !defined(__unix) && (!defined(__APPLE__) || !defined(__MACH__)))
@@ -31,7 +31,7 @@ void taskBody(void *id)
 int main (int argc, char *argv[])
 {
    int i ;
-   
+
    printf ("Main INICIO\n") ;
 
    pingpong_init () ;

@@ -1,4 +1,5 @@
 #!/bin/sh
+rm -r ./bin ./obj ./ppos.depend ./ppos.layout
 git config user.name "Daniel Vieira"
 git config user.email "d-vieira@live.com"
 git add -A
