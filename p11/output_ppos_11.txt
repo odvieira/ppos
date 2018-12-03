@@ -1,0 +1,24 @@
+    0 ms: Main INICIO
+    0 ms: Main chega na barreira
+    0 ms:     Pang dorme 3s
+    0 ms:         Peng dorme 6s
+    0 ms:             Ping dorme 17s
+    0 ms:                 Pong dorme 15s
+    0 ms:                     Pung dorme 13s
+ 3000 ms:     Pang chega na barreira
+ 6000 ms:         Peng chega na barreira
+13000 ms:                     Pung chega na barreira
+15000 ms:                 Pong chega na barreira
+17000 ms:             Ping chega na barreira
+17000 ms:             Ping passa da barreira
+17000 ms:             Ping FIM
+17000 ms: Main passa da barreira
+17000 ms: Main FIM
+17000 ms:     Pang passa da barreira
+17000 ms:     Pang FIM
+17000 ms:         Peng passa da barreira
+17000 ms:         Peng FIM
+17000 ms:                     Pung passa da barreira
+17000 ms:                     Pung FIM
+17000 ms:                 Pong passa da barreira
+17000 ms:                 Pong FIM

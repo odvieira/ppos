@@ -10,7 +10,7 @@ void queue_append (queue_t **queue, queue_t *elem)
     if(elem->prev != NULL || elem->next != NULL)
     {
         printf("Erro [queue_append() #2]: Elemento já pertence a uma fila\n");
-        elem->next=elem->prev=NULL;
+        elem->prev = elem->next = NULL;
     }
 
     if(*queue == NULL)  //Fila vazia

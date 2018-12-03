@@ -1,9 +1,9 @@
 #!/bin/sh
 
-echo "Executando configure"
+echo "########## CONTRUINDO PROJETO ##########"
 ./configure
 
-echo "Executando os programas"
+echo "########## EXECUTANDO ##########"
 for i in p*
 do
 	if [ -d ${i} ]

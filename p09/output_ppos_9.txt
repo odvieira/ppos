@@ -46,17 +46,13 @@
 16001 ms:                     Pung 5 (dorme 4s)
 16002 ms:         Peng 9 (dorme 4s)
 16003 ms:                 Pong FIM
-Task 5 exit: execution time 16003 ms, processor time 0 ms, 0 activations
 18000 ms:     Pang 9 (dorme 2s)
 18002 ms:             Ping FIM
-Task 4 exit: execution time 18002 ms, processor time 0 ms, 0 activations
 20000 ms:     Pang FIM
-Task 2 exit: execution time 20000 ms, processor time 0 ms, 0 activations
 20000 ms: Pang acabou
 20000 ms: Main espera Peng...
 20001 ms:                     Pung 6 (dorme 3s)
 20002 ms:         Peng FIM
-Task 3 exit: execution time 20002 ms, processor time 0 ms, 0 activations
 20002 ms: Peng acabou
 20002 ms: Main espera Ping...
 20002 ms: Ping acabou
@@ -67,8 +63,5 @@ Task 3 exit: execution time 20002 ms, processor time 0 ms, 0 activations
 27001 ms:                     Pung 8 (dorme 0s)
 27002 ms:                     Pung 9 (dorme 0s)
 27003 ms:                     Pung FIM
-Task 6 exit: execution time 27003 ms, processor time 0 ms, 0 activations
 27003 ms: Pung acabou
 27003 ms: Main FIM
-Task 0 exit: execution time 27003 ms, processor time 0 ms, 0 activations
-Task 1 exit: execution time 27003 ms, processor time 27003 ms, 1346 activations

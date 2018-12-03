@@ -36,13 +36,7 @@ A1 zig (8)
     A2 zig (8)
                              B2 zag (8)
 A1 zig (9)
-Task 2 exit: execution time 37000 ms, processor time 0 ms, 0 activations
                          B1 zag (9)
     A2 zig (9)
                              B2 zag (9)
-Task 4 exit: execution time 38000 ms, processor time 0 ms, 0 activations
-Task 5 exit: execution time 38000 ms, processor time 0 ms, 0 activations
-Task 3 exit: execution time 38001 ms, processor time 0 ms, 0 activations
 Main FIM
-Task 0 exit: execution time 38001 ms, processor time 0 ms, 0 activations
-Task 1 exit: execution time 38001 ms, processor time 38001 ms, 1933 activations

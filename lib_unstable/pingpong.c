@@ -11,7 +11,7 @@ unsigned int current_task_id = MAIN_ID, // Identification of the task that is be
              created_users = ROOT_ID,
              quantum = 20,
              atom_lock = 0,
-             time_to_check_sleep = 1,
+             time_to_check_sleep = 100,
              clock_var = 0;
 
 boolean_t    verbose = false,	// Display info about task_switch() and task_exit() on stdout
@@ -24,7 +24,8 @@ static task_t dispatcher,
        ext_task;
 
 static queue_t  *suspended_tasks,
-       *sleeping_tasks;
+       *sleeping_tasks,
+       *destroyed;
 
 // estrutura que define um tratador de sinal (deve ser global ou static)
 struct sigaction action;
@@ -36,6 +37,14 @@ static void task_print(task_t* task) // Private Function used to display info wh
 {
     printf("%d", task->id);
     return;
+}
+
+static void print_qstatus()
+{
+    queue_print("[task_switch()]\troot TID: ", root.task_list, (void*)task_print);
+    queue_print("[task_switch()]\tuser TID: ", common_user.task_list, (void*)task_print);
+    queue_print("[task_switch()]\tsusp TID: ", suspended_tasks, (void*)task_print);
+    queue_print("[task_switch()]\tslep TID: ", sleeping_tasks, (void*)task_print);
 }
 
 static int task_owner(int task_id)
@@ -97,7 +106,8 @@ static task_t* task_getcurrent()
             printf("task_getcurrent: invalid task\n");
         }
 
-        setcontext(dispatcher.context);
+        if(setcontext(dispatcher.context) < 0)
+            return NULL;
     }
 
     task_t *c_task = (task_t*)(user->task_list);
@@ -273,7 +283,6 @@ static void check_sleeping_tasks()
         if(now >= it->sleep_time && it->sleep_time >= 0)
         {
             it->status = READY;
-            it->sleep_time = -1;
 
             aux = (task_t*)queue_remove(&sleeping_tasks, (queue_t*)it);
 
@@ -287,6 +296,8 @@ static void check_sleeping_tasks()
                        (void *)(aux->owner->task_list),\
                        (void *)&sleeping_tasks);
             }
+
+            aux->sleep_time = -1;
 
             queue_append(&(it->owner->task_list), (queue_t*)aux);
 
@@ -304,7 +315,6 @@ static void check_sleeping_tasks()
     if(sleeping_tasks != NULL && now >= it->sleep_time && it->sleep_time >= 0)
     {
         it->status = READY;
-        it->sleep_time = -1;
 
         aux = (task_t*)queue_remove(&sleeping_tasks, (queue_t*)it);
 
@@ -318,6 +328,8 @@ static void check_sleeping_tasks()
                    (void *)(aux->owner->task_list),\
                    (void *)&sleeping_tasks);
         }
+
+        aux->sleep_time = -1;
 
         queue_append(&(it->owner->task_list), (queue_t*)aux);
 
@@ -355,7 +367,7 @@ static void dispatcher_body() // dispatcher é uma tarefa
 
             if(next_id != aux_task->id)
             {
-                task_switch(&dispatcher);
+                setcontext(dispatcher.context);
             }
             else
             {
@@ -365,7 +377,15 @@ static void dispatcher_body() // dispatcher é uma tarefa
 
         if(time_to_check_sleep <= 0 && sleeping_tasks)
         {
-            time_to_check_sleep = 1;
+            time_to_check_sleep = 100;
+            check_sleeping_tasks();
+        }
+
+        while(queue_size(common_user.task_list) == 0 &&\
+                queue_size(suspended_tasks) == 0 &&\
+                queue_size(sleeping_tasks))
+        {
+            printf("Someone must wake up...\n");
             check_sleeping_tasks();
         }
     }
@@ -530,6 +550,9 @@ void pingpong_init ()
         perror ("Erro em setitimer: ") ;
         exit (1) ;
     }
+
+    destroyed = (queue_t*)malloc(sizeof(queue_t));
+    destroyed->next = destroyed->prev = NULL;
 
     return;
 }
@@ -775,6 +798,7 @@ int task_getprio (task_t *n_task)
 
 void task_suspend (task_t *n_task, task_t **queue)
 {
+    fflush(stdin);
     atom_lock = 1;
 
     if(!n_task)
@@ -789,6 +813,7 @@ void task_suspend (task_t *n_task, task_t **queue)
         if(!suspended_tasks)
             printf("task_suspend(): NEW suspended queue task initialized\n");
     }
+    fflush(stdin);
 
     if(n_task->status == READY)
         n_task->status = SUSPENDED;
@@ -804,12 +829,14 @@ void task_suspend (task_t *n_task, task_t **queue)
         queue_print("TIDs suspended in this queue: ", (queue_t*)*queue, (void*)task_print);
     }
 
-    if(id == current_task_id)
+    fflush(stdin);
+
+    if(current_task_id == id)
     {
         if(verbose)
-        {
             printf("task_suspend: c_tid = %d \t n_tid = %d\n",current_task_id, DISP_ID);
-        }
+
+        fflush(stdin);
 
         current_task_id = DISP_ID;
 
@@ -931,9 +958,17 @@ void task_sleep (int t)
 {
     atom_lock = 1;
 
+    fflush(stdin);
+
     task_t *caller = task_getcurrent();
 
-    caller->sleep_time = systime() + t * 1000;
+    if(t < 0)
+        t = 0;
+
+    caller->sleep_time = systime() + t * 100;
+
+    fflush(stdin);
+
 
     if(verbose)
     {
@@ -942,6 +977,9 @@ void task_sleep (int t)
 
         printf("caller id[%d] status changed to SLEEPING\n", caller->id);
     }
+
+    fflush(stdin);
+
 
     caller->status = SLEEPING;
 
@@ -954,8 +992,6 @@ void task_sleep (int t)
 
 int sem_create(semaphore_t* s, int value)
 {
-
-
     if(!s)
         s = (semaphore_t*)malloc(sizeof(semaphore_t));
 
@@ -968,7 +1004,11 @@ int sem_create(semaphore_t* s, int value)
 int sem_down(semaphore_t* s)
 {
     if(verbose)
+    {
         printf("sem_down START\n");
+        queue_print("TIDs in: ", s->sem_tasks, (void*)task_print);
+
+    }
 
     if(!s)
     {
@@ -1005,11 +1045,15 @@ int sem_down(semaphore_t* s)
 
         current_task_id = DISP_ID;
 
+        if(verbose)
+        {
+            queue_print("TIDs in: ", s->sem_tasks, (void*)task_print);
+            printf("sem_down END\n");
+        }
+
         fflush(stdin);
 
         atom_lock = 0;
-
-        fflush(stdin);
 
         if(swapcontext(aux->context, dispatcher.context) < 0)
             return -1;
@@ -1020,7 +1064,12 @@ int sem_down(semaphore_t* s)
                s, current_task->id);
     }
 
-    atom_lock = 0;
+    if(verbose)
+    {
+        queue_print("TIDs in: ", s->sem_tasks, (void*)task_print);
+        printf("sem_down END\n");
+
+    }
 
     return 0;
 }
@@ -1028,15 +1077,17 @@ int sem_down(semaphore_t* s)
 int sem_up(semaphore_t* s)
 {
     if(verbose)
+    {
         printf("sem_up START\n");
+        queue_print("TIDs in: ", s->sem_tasks, (void*)task_print);
+
+    }
 
     if(!s)
     {
         printf("sem_up: invalid semaphore\n");
         return -1;
     }
-
-    atom_lock = 1;
 
     s->value = s->value + 1;
 
@@ -1046,7 +1097,7 @@ int sem_up(semaphore_t* s)
                s, current_task_id);
     }
 
-    if(s->value <= 0)
+    if(s->value < 1)
     {
         task_t *aux = (task_t*)s->sem_tasks;
 
@@ -1067,9 +1118,6 @@ int sem_up(semaphore_t* s)
             else
             {
                 printf("sem_up: can't get task from sem_tasks\n");
-
-                atom_lock = 0;
-
                 return -1;
             }
         }
@@ -1079,13 +1127,13 @@ int sem_up(semaphore_t* s)
 
             return -1;
         }
-
-        atom_lock = 0;
-
-        task_yield();
     }
 
-    atom_lock = 0;
+    if(verbose)
+    {
+        queue_print("TIDs in: ", s->sem_tasks, (void*)task_print);
+        printf("sem_up END\n");
+    }
 
     return 0;
 }
@@ -1121,6 +1169,8 @@ int sem_destroy(semaphore_t *s)
     {
         printf("sem_destroy: no task to wake\n");
     }
+
+    s->sem_tasks = destroyed;
 
     atom_lock = 0;
 
@@ -1158,7 +1208,14 @@ int barrier_join (barrier_t *b)
 
     task_t *current_task = task_getcurrent();
 
-    if(queue_size(b->barrier_tasks) < b->total_size)
+
+    if(verbose)
+    {
+        printf("cid[%d]\n", current_task->id);
+        queue_print("TIDs in this barrier: ", b->barrier_tasks, (void*)task_print);
+    }
+
+    if(queue_size(b->barrier_tasks) < b->total_size - 1)
     {
         current_task->status = SUSPENDED;
 
@@ -1168,6 +1225,12 @@ int barrier_join (barrier_t *b)
         queue_append((queue_t**)(&(b->barrier_tasks)), (queue_t*)aux);
 
         current_task_id = DISP_ID;
+
+        if(verbose)
+        {
+            queue_print("[AFTER JOIN] TIDs in this barrier: ",\
+                        b->barrier_tasks, (void*)task_print);
+        }
 
         fflush(stdin);
 
@@ -1194,8 +1257,14 @@ int barrier_join (barrier_t *b)
             queue_append((queue_t**)(&(aux->owner->task_list)), (queue_t*)aux);
         }
 
-
         current_task_id = DISP_ID;
+
+        if(verbose)
+        {
+            queue_print("[AFTER JOIN - BARRIER FILLED] TIDs in this barrier: ",\
+                        b->barrier_tasks, (void*)task_print);
+            print_qstatus();
+        }
 
         fflush(stdin);
 
@@ -1239,15 +1308,188 @@ int barrier_destroy (barrier_t *b)
 
     b->total_size = 0;
 
-    current_task_id = DISP_ID;
-
     fflush(stdin);
 
     atom_lock = 0;
 
-    fflush(stdin);
-
     task_yield();
 
     return 0;
+}
+
+int mqueue_create (mqueue_t *queue, int max, int size)
+{
+    if(!queue)
+        queue = (mqueue_t*)malloc(sizeof(mqueue_t));
+
+    atom_lock = 1;
+
+    queue->msg_content = (void*)malloc(size*max);
+    queue->msg_size = size;
+    queue->msg_counter = 0;
+
+    sem_create(&(queue->mutex), 1);
+    sem_create(&(queue->msg_seats), max);
+    sem_create(&(queue->read), 0);
+
+    atom_lock = 0;
+
+
+    return 0;
+}
+
+int mqueue_send (mqueue_t *queue, void *msg)
+{
+    if(!queue)
+    {
+        if(verbose)
+            printf("mqueue_send: invalid queue\n");
+
+        return -1;
+    }
+
+    int flag = 0;
+
+    while(!flag && queue && queue->mutex.sem_tasks != destroyed)
+    {
+        atom_lock = 1;
+        if(queue->mutex.value > 0 && queue->msg_seats.value > 0)
+        {
+            if(verbose)
+                printf("mqueue_send: (queue->mutex.value > 0 && queue->msg_seats.value > 0) == true\n");
+
+            sem_down(&(queue->mutex));
+            sem_down(&(queue->msg_seats));
+            flag = 1;
+        }
+
+        if(!flag)
+        {
+            if(verbose)
+                printf("Não foi possível alocar recursos\n");
+
+            atom_lock = 0;
+            task_sleep(1);
+        }
+    }
+
+    if(queue->mutex.sem_tasks == destroyed)
+    {
+        if(verbose)
+            printf("mqueue_send: destroyed queue\n");
+
+        return -1;
+    }
+
+    atom_lock = 1;
+
+    fflush(stdin);
+
+    memcpy(queue->msg_content + (queue->msg_size * queue->msg_counter), msg, queue->msg_size);
+
+    queue->msg_counter = queue->msg_counter + 1;
+
+    atom_lock = 0;
+
+    sem_up(&(queue->read));
+    sem_up(&(queue->mutex));
+
+    return 0;
+}
+
+int mqueue_recv (mqueue_t *queue, void *msg)
+{
+    if(!queue)
+    {
+        if(verbose)
+            printf("mqueue_send: invalid queue\n");
+
+        return -1;
+    }
+
+    int flag = 0;
+
+    atom_lock = 1;
+
+    while(!flag && queue && queue->mutex.sem_tasks != destroyed)
+    {
+        atom_lock = 1;
+        if(queue->mutex.value > 0 && queue->read.value > 0)
+        {
+            if(verbose)
+                printf("mqueue_send: (queue->mutex.value > 0 && queue->msg_seats.value > 0) == true\n");
+
+            sem_down(&(queue->mutex));
+            sem_down(&(queue->read));
+            flag = 1;
+        }
+
+        if(!flag)
+        {
+            if(verbose)
+            {
+                printf("Não foi possível alocar recursos\n");
+            }
+            atom_lock = 0;
+            task_sleep(1);
+        }
+    }
+
+    if(queue->mutex.sem_tasks == destroyed)
+    {
+        if(verbose)
+            printf("mqueue_send: destroyed queue\n");
+
+        return -1;
+    }
+
+    fflush(stdin);
+
+    memcpy(msg, queue->msg_content, queue->msg_size);
+
+    queue->msg_counter -= 1;
+
+    int i;
+
+    void* aux = queue->msg_content;
+
+    for(i = 0; i < queue->msg_counter; i++)
+    {
+        memcpy(aux, aux + queue->msg_size, queue->msg_size);
+        aux += queue->msg_size;
+    }
+
+    sem_up(&(queue->msg_seats));
+    sem_up(&(queue->mutex));
+
+    atom_lock = 0;
+
+    return 0;
+}
+
+int mqueue_destroy (mqueue_t *queue)
+{
+    if(!queue)
+        return -1;
+
+    sem_destroy(&(queue->mutex));
+    sem_destroy(&(queue->msg_seats));
+    sem_destroy(&(queue->read));
+
+    atom_lock = 1;
+
+    free(queue->msg_content);
+    queue->msg_counter = queue->msg_size = 0;
+
+    atom_lock = 0;
+
+    return 0;
+}
+
+int mqueue_msgs (mqueue_t *queue)
+{
+    if(!queue)
+        return -1;
+
+    return queue->msg_counter;
 }

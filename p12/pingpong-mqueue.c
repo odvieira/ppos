@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
-#include "pingpong.h"
+#include "../lib_unstable/pingpong.h"
 
 // operating system check
 #if defined(_WIN32) || (!defined(__unix__) && !defined(__unix) && (!defined(__APPLE__) || !defined(__MACH__)))
@@ -118,7 +118,7 @@ int main (int argc, char *argv[])
    printf ("Main destroi queueRaizes\n") ;
    mqueue_destroy (&queueRaizes) ;
 
-   // encerra a thread main 
+   // encerra a thread main
    printf ("Main FIM\n") ;
    task_exit (0) ;
 
