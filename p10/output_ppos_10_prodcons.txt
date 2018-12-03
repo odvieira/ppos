@@ -1,0 +1,825 @@
+item produzido p1: 83
+item produzido p3: 86
+			item consumido c1 83
+			item consumido c2 86
+item produzido p2: 77
+item produzido p1: 15
+item produzido p3: 93
+			item consumido c2 77
+			item consumido c1 15
+item produzido p2: 35
+item produzido p1: 86
+			item consumido c2 93
+item produzido p3: 92
+			item consumido c1 35
+item produzido p2: 49
+item produzido p1: 21
+			item consumido c2 86
+item produzido p3: 62
+			item consumido c1 92
+item produzido p2: 27
+item produzido p1: 90
+			item consumido c2 49
+item produzido p3: 59
+			item consumido c1 21
+item produzido p2: 63
+			item consumido c2 62
+item produzido p1: 26
+			item consumido c1 27
+item produzido p3: 40
+			item consumido c2 90
+item produzido p2: 26
+			item consumido c1 59
+item produzido p1: 72
+			item consumido c2 63
+item produzido p3: 36
+			item consumido c1 26
+item produzido p2: 11
+			item consumido c2 40
+item produzido p1: 68
+			item consumido c1 26
+item produzido p3: 67
+			item consumido c2 72
+item produzido p2: 29
+			item consumido c1 36
+item produzido p1: 82
+			item consumido c2 11
+item produzido p3: 30
+			item consumido c1 68
+item produzido p2: 62
+			item consumido c2 67
+item produzido p1: 23
+			item consumido c1 29
+item produzido p3: 67
+			item consumido c2 82
+item produzido p2: 35
+			item consumido c1 30
+item produzido p1: 29
+			item consumido c2 62
+item produzido p3: 2
+			item consumido c1 23
+item produzido p2: 22
+			item consumido c2 67
+item produzido p1: 58
+			item consumido c1 35
+item produzido p3: 69
+			item consumido c2 29
+item produzido p2: 67
+			item consumido c1 2
+item produzido p1: 93
+			item consumido c2 22
+item produzido p3: 56
+			item consumido c1 58
+item produzido p2: 11
+			item consumido c2 69
+item produzido p1: 42
+			item consumido c1 67
+item produzido p3: 29
+			item consumido c2 93
+item produzido p2: 73
+			item consumido c1 56
+item produzido p1: 21
+			item consumido c2 11
+item produzido p3: 19
+			item consumido c1 42
+item produzido p2: 84
+			item consumido c2 29
+item produzido p1: 37
+			item consumido c1 73
+item produzido p3: 98
+			item consumido c2 21
+item produzido p2: 24
+			item consumido c1 19
+item produzido p1: 15
+			item consumido c2 84
+item produzido p3: 70
+			item consumido c1 37
+item produzido p2: 13
+			item consumido c2 98
+item produzido p1: 26
+			item consumido c1 24
+item produzido p3: 91
+			item consumido c2 15
+item produzido p2: 80
+			item consumido c1 70
+item produzido p1: 56
+			item consumido c2 13
+item produzido p3: 73
+			item consumido c1 26
+item produzido p2: 62
+			item consumido c2 91
+item produzido p1: 70
+			item consumido c1 80
+item produzido p3: 96
+			item consumido c2 56
+item produzido p2: 81
+			item consumido c1 73
+item produzido p1: 5
+			item consumido c2 62
+item produzido p3: 25
+			item consumido c1 70
+item produzido p2: 84
+			item consumido c2 96
+item produzido p1: 27
+			item consumido c1 81
+item produzido p3: 36
+			item consumido c2 5
+item produzido p2: 5
+			item consumido c1 25
+item produzido p1: 46
+			item consumido c2 84
+item produzido p3: 29
+			item consumido c1 27
+item produzido p2: 13
+			item consumido c2 36
+item produzido p1: 57
+			item consumido c1 5
+item produzido p3: 24
+			item consumido c2 46
+item produzido p2: 95
+			item consumido c1 29
+item produzido p1: 82
+			item consumido c2 13
+item produzido p3: 45
+			item consumido c1 57
+item produzido p2: 14
+			item consumido c2 24
+item produzido p1: 67
+			item consumido c1 95
+item produzido p3: 34
+			item consumido c2 82
+item produzido p2: 64
+			item consumido c1 45
+item produzido p1: 43
+			item consumido c2 14
+item produzido p3: 50
+			item consumido c1 67
+item produzido p2: 87
+			item consumido c2 34
+item produzido p1: 8
+			item consumido c1 64
+item produzido p3: 76
+			item consumido c2 43
+item produzido p2: 78
+			item consumido c1 50
+item produzido p1: 88
+			item consumido c2 87
+item produzido p3: 84
+			item consumido c1 8
+item produzido p2: 3
+			item consumido c2 76
+item produzido p1: 51
+			item consumido c1 78
+item produzido p3: 54
+			item consumido c2 88
+item produzido p2: 99
+			item consumido c1 84
+item produzido p1: 32
+			item consumido c2 3
+item produzido p3: 60
+			item consumido c1 51
+item produzido p2: 76
+			item consumido c2 54
+item produzido p1: 68
+			item consumido c1 99
+item produzido p3: 39
+			item consumido c2 32
+item produzido p2: 12
+			item consumido c1 60
+item produzido p1: 26
+			item consumido c2 76
+item produzido p3: 86
+			item consumido c1 68
+item produzido p2: 94
+			item consumido c2 39
+item produzido p1: 39
+			item consumido c1 12
+item produzido p3: 95
+			item consumido c2 26
+item produzido p2: 70
+			item consumido c1 86
+item produzido p1: 34
+			item consumido c2 94
+item produzido p3: 78
+			item consumido c1 39
+item produzido p2: 67
+			item consumido c2 95
+item produzido p1: 1
+			item consumido c1 70
+item produzido p3: 97
+			item consumido c2 34
+item produzido p2: 2
+			item consumido c1 78
+item produzido p1: 17
+			item consumido c2 67
+item produzido p3: 92
+			item consumido c1 1
+item produzido p2: 52
+			item consumido c2 97
+item produzido p1: 56
+			item consumido c1 2
+item produzido p3: 1
+			item consumido c2 17
+item produzido p2: 80
+			item consumido c1 92
+item produzido p1: 86
+			item consumido c2 52
+item produzido p3: 41
+			item consumido c1 56
+item produzido p2: 65
+			item consumido c2 1
+item produzido p1: 89
+			item consumido c1 80
+item produzido p3: 44
+			item consumido c2 86
+item produzido p2: 19
+			item consumido c1 41
+item produzido p1: 40
+			item consumido c2 65
+item produzido p3: 29
+			item consumido c1 89
+item produzido p2: 31
+			item consumido c2 44
+item produzido p1: 17
+			item consumido c1 19
+item produzido p3: 97
+			item consumido c2 40
+item produzido p2: 71
+			item consumido c1 29
+item produzido p1: 81
+			item consumido c2 31
+item produzido p3: 75
+			item consumido c1 17
+item produzido p2: 9
+			item consumido c2 97
+item produzido p1: 27
+			item consumido c1 71
+item produzido p3: 67
+			item consumido c2 81
+item produzido p2: 56
+			item consumido c1 75
+item produzido p1: 97
+			item consumido c2 9
+item produzido p3: 53
+			item consumido c1 27
+item produzido p2: 86
+			item consumido c2 67
+item produzido p1: 65
+			item consumido c1 56
+item produzido p3: 6
+			item consumido c2 97
+item produzido p2: 83
+			item consumido c1 53
+item produzido p1: 19
+			item consumido c2 86
+item produzido p3: 24
+			item consumido c1 65
+item produzido p2: 28
+			item consumido c2 6
+item produzido p1: 71
+			item consumido c1 83
+item produzido p3: 32
+			item consumido c2 19
+item produzido p2: 29
+			item consumido c1 24
+item produzido p1: 3
+			item consumido c2 28
+item produzido p3: 19
+			item consumido c1 71
+item produzido p2: 70
+			item consumido c2 32
+item produzido p1: 68
+			item consumido c1 29
+item produzido p3: 8
+			item consumido c2 3
+item produzido p2: 15
+			item consumido c1 19
+item produzido p1: 40
+			item consumido c2 70
+item produzido p3: 49
+			item consumido c1 68
+item produzido p2: 96
+			item consumido c2 8
+item produzido p1: 23
+			item consumido c1 15
+item produzido p3: 18
+			item consumido c2 40
+item produzido p2: 45
+			item consumido c1 49
+item produzido p1: 46
+			item consumido c2 96
+item produzido p3: 51
+			item consumido c1 23
+item produzido p2: 21
+			item consumido c2 18
+item produzido p1: 55
+			item consumido c1 45
+item produzido p3: 79
+			item consumido c2 46
+item produzido p2: 88
+			item consumido c1 51
+item produzido p1: 64
+			item consumido c2 21
+item produzido p3: 28
+			item consumido c1 55
+item produzido p2: 41
+			item consumido c2 79
+item produzido p1: 50
+			item consumido c1 88
+item produzido p3: 93
+			item consumido c2 64
+item produzido p2: 0
+			item consumido c1 28
+item produzido p1: 34
+			item consumido c2 41
+item produzido p3: 64
+			item consumido c1 50
+item produzido p2: 24
+			item consumido c2 93
+item produzido p1: 14
+			item consumido c1 0
+item produzido p3: 87
+			item consumido c2 34
+item produzido p2: 56
+			item consumido c1 64
+item produzido p1: 43
+			item consumido c2 24
+item produzido p3: 91
+			item consumido c1 14
+item produzido p2: 27
+			item consumido c2 87
+item produzido p1: 65
+			item consumido c1 56
+item produzido p3: 59
+			item consumido c2 43
+item produzido p2: 36
+			item consumido c1 91
+item produzido p1: 32
+			item consumido c2 27
+item produzido p3: 51
+			item consumido c1 65
+item produzido p2: 37
+			item consumido c2 59
+item produzido p1: 28
+			item consumido c1 36
+item produzido p3: 75
+			item consumido c2 32
+item produzido p2: 7
+			item consumido c1 51
+item produzido p1: 74
+			item consumido c2 37
+item produzido p3: 21
+			item consumido c1 28
+item produzido p2: 58
+			item consumido c2 75
+item produzido p1: 95
+			item consumido c1 7
+item produzido p3: 29
+			item consumido c2 74
+item produzido p2: 37
+			item consumido c1 21
+item produzido p1: 35
+			item consumido c2 58
+item produzido p3: 93
+			item consumido c1 95
+item produzido p2: 18
+			item consumido c2 29
+item produzido p1: 28
+			item consumido c1 37
+item produzido p3: 43
+			item consumido c2 35
+item produzido p2: 11
+			item consumido c1 93
+item produzido p1: 28
+			item consumido c2 18
+item produzido p3: 29
+			item consumido c1 28
+item produzido p2: 76
+			item consumido c2 43
+item produzido p1: 4
+			item consumido c1 11
+item produzido p3: 43
+			item consumido c2 28
+item produzido p2: 63
+			item consumido c1 29
+item produzido p1: 13
+			item consumido c2 76
+item produzido p3: 38
+			item consumido c1 4
+item produzido p2: 6
+			item consumido c2 43
+item produzido p1: 40
+			item consumido c1 63
+item produzido p3: 4
+			item consumido c2 13
+item produzido p2: 18
+			item consumido c1 38
+item produzido p1: 28
+			item consumido c2 6
+item produzido p3: 88
+			item consumido c1 40
+item produzido p2: 69
+			item consumido c2 4
+item produzido p1: 17
+			item consumido c1 18
+item produzido p3: 17
+			item consumido c2 28
+item produzido p2: 96
+			item consumido c1 88
+item produzido p1: 24
+			item consumido c2 69
+item produzido p3: 43
+			item consumido c1 17
+item produzido p2: 70
+			item consumido c2 17
+item produzido p1: 83
+			item consumido c1 96
+item produzido p3: 90
+			item consumido c2 24
+item produzido p2: 99
+			item consumido c1 43
+item produzido p1: 72
+			item consumido c2 70
+item produzido p3: 25
+			item consumido c1 83
+item produzido p2: 44
+			item consumido c2 90
+item produzido p1: 90
+			item consumido c1 99
+item produzido p3: 5
+			item consumido c2 72
+item produzido p2: 39
+			item consumido c1 25
+item produzido p1: 54
+			item consumido c2 44
+item produzido p3: 86
+			item consumido c1 90
+item produzido p2: 69
+			item consumido c2 5
+item produzido p1: 82
+			item consumido c1 39
+item produzido p3: 42
+			item consumido c2 54
+item produzido p2: 64
+			item consumido c1 86
+item produzido p1: 97
+			item consumido c2 69
+item produzido p3: 7
+			item consumido c1 82
+item produzido p2: 55
+			item consumido c2 42
+item produzido p1: 4
+			item consumido c1 64
+item produzido p3: 48
+			item consumido c2 97
+item produzido p2: 11
+			item consumido c1 7
+item produzido p1: 22
+			item consumido c2 55
+item produzido p3: 28
+			item consumido c1 4
+item produzido p2: 99
+			item consumido c2 48
+item produzido p1: 43
+			item consumido c1 11
+item produzido p3: 46
+			item consumido c2 22
+item produzido p2: 68
+			item consumido c1 28
+item produzido p1: 40
+			item consumido c2 99
+item produzido p3: 22
+			item consumido c1 43
+item produzido p2: 11
+			item consumido c2 46
+item produzido p1: 10
+			item consumido c1 68
+item produzido p3: 5
+			item consumido c2 40
+item produzido p2: 1
+			item consumido c1 22
+item produzido p1: 61
+			item consumido c2 11
+item produzido p3: 30
+			item consumido c1 10
+item produzido p2: 78
+			item consumido c2 5
+item produzido p1: 5
+			item consumido c1 1
+item produzido p3: 20
+			item consumido c2 61
+item produzido p2: 36
+			item consumido c1 30
+item produzido p1: 44
+			item consumido c2 78
+item produzido p3: 26
+			item consumido c1 5
+item produzido p2: 22
+			item consumido c2 20
+item produzido p1: 65
+			item consumido c1 36
+item produzido p3: 8
+			item consumido c2 44
+item produzido p2: 16
+			item consumido c1 26
+item produzido p1: 82
+			item consumido c2 22
+item produzido p3: 58
+			item consumido c1 65
+item produzido p2: 24
+			item consumido c2 8
+item produzido p1: 37
+			item consumido c1 16
+item produzido p3: 62
+			item consumido c2 82
+item produzido p2: 24
+			item consumido c1 58
+item produzido p1: 0
+			item consumido c2 24
+item produzido p3: 36
+			item consumido c1 37
+item produzido p2: 52
+			item consumido c2 62
+item produzido p1: 99
+			item consumido c1 24
+item produzido p3: 79
+			item consumido c2 0
+item produzido p2: 50
+			item consumido c1 36
+item produzido p1: 68
+			item consumido c2 52
+item produzido p3: 71
+			item consumido c1 99
+item produzido p2: 73
+			item consumido c2 79
+item produzido p1: 31
+			item consumido c1 50
+item produzido p3: 81
+			item consumido c2 68
+item produzido p2: 30
+			item consumido c1 71
+item produzido p1: 33
+			item consumido c2 73
+item produzido p3: 94
+			item consumido c1 31
+item produzido p2: 60
+			item consumido c2 81
+item produzido p1: 63
+			item consumido c1 30
+item produzido p3: 99
+			item consumido c2 33
+item produzido p2: 81
+			item consumido c1 94
+item produzido p1: 99
+			item consumido c2 60
+item produzido p3: 96
+			item consumido c1 63
+item produzido p2: 59
+			item consumido c2 99
+item produzido p1: 73
+			item consumido c1 81
+item produzido p3: 13
+			item consumido c2 99
+item produzido p2: 68
+			item consumido c1 96
+item produzido p1: 90
+			item consumido c2 59
+item produzido p3: 95
+			item consumido c1 73
+item produzido p2: 26
+			item consumido c2 13
+item produzido p1: 66
+			item consumido c1 68
+item produzido p3: 84
+			item consumido c2 90
+item produzido p2: 40
+			item consumido c1 95
+item produzido p1: 90
+			item consumido c2 26
+item produzido p3: 84
+			item consumido c1 66
+item produzido p2: 76
+			item consumido c2 84
+item produzido p1: 42
+			item consumido c1 40
+item produzido p3: 36
+			item consumido c2 90
+item produzido p2: 7
+			item consumido c1 84
+item produzido p1: 45
+			item consumido c2 76
+item produzido p3: 56
+			item consumido c1 42
+item produzido p2: 79
+			item consumido c2 36
+item produzido p1: 18
+			item consumido c1 7
+item produzido p3: 87
+			item consumido c2 45
+item produzido p2: 12
+			item consumido c1 56
+item produzido p1: 48
+			item consumido c2 79
+item produzido p3: 72
+			item consumido c1 18
+item produzido p2: 59
+			item consumido c2 87
+item produzido p1: 9
+			item consumido c1 12
+item produzido p3: 36
+			item consumido c2 48
+item produzido p2: 10
+			item consumido c1 72
+item produzido p1: 42
+			item consumido c2 59
+item produzido p3: 87
+			item consumido c1 9
+item produzido p2: 6
+			item consumido c2 36
+item produzido p1: 1
+			item consumido c1 10
+item produzido p3: 13
+			item consumido c2 42
+item produzido p2: 72
+			item consumido c1 87
+item produzido p1: 21
+			item consumido c2 6
+item produzido p3: 55
+			item consumido c1 1
+item produzido p2: 19
+			item consumido c2 13
+item produzido p1: 99
+			item consumido c1 72
+item produzido p3: 21
+			item consumido c2 21
+item produzido p2: 4
+			item consumido c1 55
+item produzido p1: 39
+			item consumido c2 19
+item produzido p3: 11
+			item consumido c1 99
+item produzido p2: 40
+			item consumido c2 21
+item produzido p1: 67
+			item consumido c1 4
+item produzido p3: 5
+			item consumido c2 39
+item produzido p2: 28
+			item consumido c1 11
+item produzido p1: 27
+			item consumido c2 40
+item produzido p3: 50
+			item consumido c1 67
+item produzido p2: 84
+			item consumido c2 5
+item produzido p1: 58
+			item consumido c1 28
+item produzido p3: 20
+			item consumido c2 27
+item produzido p2: 24
+			item consumido c1 50
+item produzido p1: 22
+			item consumido c2 84
+item produzido p3: 69
+			item consumido c1 58
+item produzido p2: 96
+			item consumido c2 20
+item produzido p1: 81
+			item consumido c1 24
+item produzido p3: 30
+			item consumido c2 22
+item produzido p2: 84
+			item consumido c1 69
+item produzido p1: 92
+			item consumido c2 96
+item produzido p3: 72
+			item consumido c1 81
+item produzido p2: 72
+			item consumido c2 30
+item produzido p1: 50
+			item consumido c1 84
+item produzido p3: 25
+			item consumido c2 92
+item produzido p2: 85
+			item consumido c1 72
+item produzido p1: 22
+			item consumido c2 72
+item produzido p3: 99
+			item consumido c1 50
+item produzido p2: 40
+			item consumido c2 25
+item produzido p1: 42
+			item consumido c1 85
+item produzido p3: 98
+			item consumido c2 22
+item produzido p2: 13
+			item consumido c1 99
+item produzido p1: 98
+			item consumido c2 40
+item produzido p3: 90
+			item consumido c1 42
+item produzido p2: 24
+			item consumido c2 98
+item produzido p1: 90
+			item consumido c1 13
+item produzido p3: 9
+			item consumido c2 98
+item produzido p2: 81
+			item consumido c1 90
+item produzido p1: 19
+			item consumido c2 24
+item produzido p3: 36
+			item consumido c1 90
+item produzido p2: 32
+			item consumido c2 9
+item produzido p1: 55
+			item consumido c1 81
+item produzido p3: 94
+			item consumido c2 19
+item produzido p2: 4
+			item consumido c1 36
+item produzido p1: 79
+			item consumido c2 32
+item produzido p3: 69
+			item consumido c1 55
+item produzido p2: 73
+			item consumido c2 94
+item produzido p1: 76
+			item consumido c1 4
+item produzido p3: 50
+			item consumido c2 79
+item produzido p2: 55
+			item consumido c1 69
+item produzido p1: 60
+			item consumido c2 73
+item produzido p3: 42
+			item consumido c1 76
+item produzido p2: 79
+			item consumido c2 50
+item produzido p1: 84
+			item consumido c1 55
+item produzido p3: 93
+			item consumido c2 60
+item produzido p2: 5
+			item consumido c1 42
+item produzido p1: 21
+			item consumido c2 79
+item produzido p3: 67
+			item consumido c1 84
+item produzido p2: 4
+			item consumido c2 93
+item produzido p1: 13
+			item consumido c1 5
+item produzido p3: 61
+			item consumido c2 21
+item produzido p2: 54
+			item consumido c1 67
+item produzido p1: 26
+			item consumido c2 4
+item produzido p3: 59
+			item consumido c1 13
+item produzido p2: 44
+			item consumido c2 61
+item produzido p1: 2
+			item consumido c1 54
+item produzido p3: 2
+			item consumido c2 26
+item produzido p2: 6
+			item consumido c1 59
+item produzido p1: 84
+			item consumido c2 44
+item produzido p3: 21
+			item consumido c1 2
+item produzido p2: 42
+			item consumido c2 2
+item produzido p1: 68
+			item consumido c1 6
+item produzido p3: 28
+			item consumido c2 84
+item produzido p2: 89
+			item consumido c1 21
+item produzido p1: 72
+			item consumido c2 42
+item produzido p3: 8
+			item consumido c1 68
+item produzido p2: 58
+			item consumido c2 28
+item produzido p1: 98
+			item consumido c1 89
+item produzido p3: 36
+			item consumido c2 72
+item produzido p2: 8
+			item consumido c1 8
+item produzido p1: 53
+			item consumido c2 58
+item produzido p3: 48
+			item consumido c1 98
+item produzido p2: 3
+			item consumido c2 36
+item produzido p1: 33
+			item consumido c1 8
+item produzido p3: 33
+			item consumido c2 53
+item produzido p2: 48
+			item consumido c1 48
+item produzido p1: 90

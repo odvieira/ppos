@@ -14,7 +14,7 @@ unsigned int current_task_id = MAIN_ID, // Identification of the task that is be
              time_to_check_sleep = 100,
              clock_var = 0;
 
-boolean_t    verbose = false,	// Display info about task_switch() and task_exit() on stdout
+boolean_t    verbose = true,	// Display info about task_switch() and task_exit() on stdout
              time_show = true;
 
 static user_t root, common_user;
@@ -378,14 +378,6 @@ static void dispatcher_body() // dispatcher é uma tarefa
         if(time_to_check_sleep <= 0 && sleeping_tasks)
         {
             time_to_check_sleep = 100;
-            check_sleeping_tasks();
-        }
-
-        while(queue_size(common_user.task_list) == 0 &&\
-                queue_size(suspended_tasks) == 0 &&\
-                queue_size(sleeping_tasks))
-        {
-            printf("Someone must wake up...\n");
             check_sleeping_tasks();
         }
     }

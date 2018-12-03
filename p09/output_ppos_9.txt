@@ -1,67 +1,1252 @@
+Main criada
+[task_create()]	root TID: []
+[task_create()]	user TID: [0 1]
     0 ms: Main INICIO
+[task_create()]	root TID: [1]
+[task_create()]	user TID: [0 2]
+[task_create()]	root TID: [1]
+[task_create()]	user TID: [0 2 3]
+[task_create()]	root TID: [1]
+[task_create()]	user TID: [0 2 3 4]
+[task_create()]	root TID: [1]
+[task_create()]	user TID: [0 2 3 4 5]
+[task_create()]	root TID: [1]
+[task_create()]	user TID: [0 2 3 4 5 6]
     0 ms: Main espera Pang...
+JOIN started : caller[0] in target[2]
+Suspending tid[0] (should be tid[0]) to queue_adress: 0x559f857f81c0
+task_suspend(): NEW suspended queue task initialized
+TIDs suspended in this queue: [0]
+task_suspend: c_tid = 0 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [2 3 4 5 6]
+Scheduler Finalizado
+next_id obtido 2
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [2 3 4 5 6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: []
+c_tid = 1 	 n_tid = 2
+int task_switch [SWAP]
     0 ms:     Pang 0 (dorme 3s)
+task_sleep(): tid = 2 	 now: 0 	 sleep_time: 300
+caller id[2] status changed to SLEEPING
+Suspending tid[2] (should be tid[2]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2]
+task_suspend: c_tid = 2 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [3 4 5 6]
+Scheduler Finalizado
+next_id obtido 3
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [3 4 5 6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2]
+c_tid = 1 	 n_tid = 3
+int task_switch [SWAP]
     0 ms:         Peng 0 (dorme 1s)
+task_sleep(): tid = 3 	 now: 0 	 sleep_time: 100
+caller id[3] status changed to SLEEPING
+Suspending tid[3] (should be tid[3]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 3]
+task_suspend: c_tid = 3 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [4 5 6]
+Scheduler Finalizado
+next_id obtido 4
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [4 5 6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 3]
+c_tid = 1 	 n_tid = 4
+int task_switch [SWAP]
     0 ms:             Ping 0 (dorme 2s)
+task_sleep(): tid = 4 	 now: 0 	 sleep_time: 200
+caller id[4] status changed to SLEEPING
+Suspending tid[4] (should be tid[4]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 3 4]
+task_suspend: c_tid = 4 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [5 6]
+Scheduler Finalizado
+next_id obtido 5
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [5 6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 3 4]
+c_tid = 1 	 n_tid = 5
+int task_switch [SWAP]
     0 ms:                 Pong 0 (dorme 0s)
+task_sleep(): tid = 5 	 now: 0 	 sleep_time: 0
+caller id[5] status changed to SLEEPING
+Suspending tid[5] (should be tid[5]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 3 4 5]
+task_suspend: c_tid = 5 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [6]
+Scheduler Finalizado
+next_id obtido 6
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 3 4 5]
+c_tid = 1 	 n_tid = 6
+int task_switch [SWAP]
     0 ms:                     Pung 0 (dorme 3s)
-    1 ms:                 Pong 1 (dorme 0s)
-    2 ms:                 Pong 2 (dorme 1s)
- 1000 ms:         Peng 1 (dorme 2s)
- 1002 ms:                 Pong 3 (dorme 4s)
- 2000 ms:             Ping 1 (dorme 1s)
- 3000 ms:     Pang 1 (dorme 2s)
- 3000 ms:         Peng 2 (dorme 2s)
- 3000 ms:             Ping 2 (dorme 0s)
- 3001 ms:                     Pung 1 (dorme 4s)
- 3001 ms:             Ping 3 (dorme 3s)
- 5000 ms:     Pang 2 (dorme 1s)
- 5000 ms:         Peng 3 (dorme 0s)
- 5001 ms:         Peng 4 (dorme 1s)
- 5002 ms:                 Pong 4 (dorme 2s)
- 6000 ms:     Pang 3 (dorme 1s)
- 6001 ms:             Ping 4 (dorme 1s)
- 6001 ms:         Peng 5 (dorme 3s)
- 7000 ms:     Pang 4 (dorme 2s)
- 7001 ms:                     Pung 2 (dorme 4s)
- 7001 ms:             Ping 5 (dorme 2s)
- 7002 ms:                 Pong 5 (dorme 0s)
- 7003 ms:                 Pong 6 (dorme 2s)
- 9000 ms:     Pang 5 (dorme 3s)
- 9001 ms:         Peng 6 (dorme 2s)
- 9001 ms:             Ping 6 (dorme 0s)
- 9002 ms:             Ping 7 (dorme 4s)
- 9003 ms:                 Pong 7 (dorme 2s)
-11001 ms:                     Pung 3 (dorme 2s)
-11001 ms:         Peng 7 (dorme 3s)
-11003 ms:                 Pong 8 (dorme 4s)
-12000 ms:     Pang 6 (dorme 2s)
-13001 ms:                     Pung 4 (dorme 3s)
-13002 ms:             Ping 8 (dorme 1s)
-14000 ms:     Pang 7 (dorme 1s)
-14001 ms:         Peng 8 (dorme 2s)
-14002 ms:             Ping 9 (dorme 4s)
-15000 ms:     Pang 8 (dorme 3s)
-15003 ms:                 Pong 9 (dorme 1s)
-16001 ms:                     Pung 5 (dorme 4s)
-16002 ms:         Peng 9 (dorme 4s)
-16003 ms:                 Pong FIM
-18000 ms:     Pang 9 (dorme 2s)
-18002 ms:             Ping FIM
-20000 ms:     Pang FIM
-20000 ms: Pang acabou
-20000 ms: Main espera Peng...
-20001 ms:                     Pung 6 (dorme 3s)
-20002 ms:         Peng FIM
-20002 ms: Peng acabou
-20002 ms: Main espera Ping...
-20002 ms: Ping acabou
-20002 ms: Main espera Pong...
-20002 ms: Pong acabou
-20002 ms: Main espera Pung...
-23001 ms:                     Pung 7 (dorme 4s)
-27001 ms:                     Pung 8 (dorme 0s)
-27002 ms:                     Pung 9 (dorme 0s)
-27003 ms:                     Pung FIM
-27003 ms: Pung acabou
-27003 ms: Main FIM
+task_sleep(): tid = 6 	 now: 0 	 sleep_time: 300
+caller id[6] status changed to SLEEPING
+Suspending tid[6] (should be tid[6]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 3 4 5 6]
+task_suspend: c_tid = 6 	 n_tid = 1
+TIDs sleeping: [2 4 5 6]
+[TIME: 100] sleep time over for tid[3]->sleep_time[100]
+Appending tid[3] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 4 5 6]
+TIDs sleeping: [2 4 6]
+[TIME: 100] sleep time over for tid[5]->sleep_time[0]
+Appending tid[5] to common_user (0x559f857f8300) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 4 6]
+Scheduler Iniciado
+TIDs in Scheduler: [3 5]
+Scheduler Finalizado
+next_id obtido 3
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [3 5]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 4 6]
+c_tid = 1 	 n_tid = 3
+int task_switch [SWAP]
+  100 ms:         Peng 1 (dorme 0s)
+task_sleep(): tid = 3 	 now: 100 	 sleep_time: 100
+caller id[3] status changed to SLEEPING
+Suspending tid[3] (should be tid[3]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 4 6 3]
+task_suspend: c_tid = 3 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [5]
+Scheduler Finalizado
+next_id obtido 5
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [5]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 4 6 3]
+c_tid = 1 	 n_tid = 5
+int task_switch [SWAP]
+  100 ms:                 Pong 1 (dorme 1s)
+task_sleep(): tid = 5 	 now: 100 	 sleep_time: 200
+caller id[5] status changed to SLEEPING
+Suspending tid[5] (should be tid[5]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 4 6 3 5]
+task_suspend: c_tid = 5 	 n_tid = 1
+TIDs sleeping: [2 6 3 5]
+[TIME: 200] sleep time over for tid[4]->sleep_time[200]
+Appending tid[4] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 6 3 5]
+TIDs sleeping: [2 6 5]
+[TIME: 200] sleep time over for tid[3]->sleep_time[100]
+Appending tid[3] to common_user (0x559f857f81e0) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 6 5]
+TIDs sleeping: [2 6]
+[TIME: 200] sleep time over for tid[5]->sleep_time[200]
+Appending tid[5] to common_user (0x559f857f81e0) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 6]
+Scheduler Iniciado
+TIDs in Scheduler: [4 3 5]
+Scheduler Finalizado
+next_id obtido 4
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [4 3 5]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 6]
+c_tid = 1 	 n_tid = 4
+int task_switch [SWAP]
+  200 ms:             Ping 1 (dorme 2s)
+task_sleep(): tid = 4 	 now: 200 	 sleep_time: 400
+caller id[4] status changed to SLEEPING
+Suspending tid[4] (should be tid[4]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 6 4]
+task_suspend: c_tid = 4 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [3 5]
+Scheduler Finalizado
+next_id obtido 3
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [3 5]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 6 4]
+c_tid = 1 	 n_tid = 3
+int task_switch [SWAP]
+  200 ms:         Peng 2 (dorme 4s)
+task_sleep(): tid = 3 	 now: 200 	 sleep_time: 600
+caller id[3] status changed to SLEEPING
+Suspending tid[3] (should be tid[3]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 6 4 3]
+task_suspend: c_tid = 3 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [5]
+Scheduler Finalizado
+next_id obtido 5
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [5]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 6 4 3]
+c_tid = 1 	 n_tid = 5
+int task_switch [SWAP]
+  200 ms:                 Pong 2 (dorme 1s)
+task_sleep(): tid = 5 	 now: 200 	 sleep_time: 300
+caller id[5] status changed to SLEEPING
+Suspending tid[5] (should be tid[5]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 6 4 3 5]
+task_suspend: c_tid = 5 	 n_tid = 1
+TIDs sleeping: [6 4 3 5]
+[TIME: 300] sleep time over for tid[2]->sleep_time[300]
+Appending tid[2] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [6 4 3 5]
+TIDs sleeping: [6 4 3]
+[TIME: 300] sleep time over for tid[5]->sleep_time[300]
+Appending tid[5] to common_user (0x559f857f82a0) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [6 4 3]
+Scheduler Iniciado
+TIDs in Scheduler: [2 5]
+Scheduler Finalizado
+next_id obtido 2
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [2 5]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [6 4 3]
+c_tid = 1 	 n_tid = 2
+int task_switch [SWAP]
+  300 ms:     Pang 1 (dorme 2s)
+task_sleep(): tid = 2 	 now: 300 	 sleep_time: 500
+caller id[2] status changed to SLEEPING
+Suspending tid[2] (should be tid[2]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [6 4 3 2]
+task_suspend: c_tid = 2 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [5]
+Scheduler Finalizado
+next_id obtido 5
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [5]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [6 4 3 2]
+c_tid = 1 	 n_tid = 5
+int task_switch [SWAP]
+  300 ms:                 Pong 3 (dorme 2s)
+task_sleep(): tid = 5 	 now: 300 	 sleep_time: 500
+caller id[5] status changed to SLEEPING
+Suspending tid[5] (should be tid[5]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [6 4 3 2 5]
+task_suspend: c_tid = 5 	 n_tid = 1
+TIDs sleeping: [4 3 2 5]
+[TIME: 400] sleep time over for tid[6]->sleep_time[300]
+Appending tid[6] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [4 3 2 5]
+Scheduler Iniciado
+TIDs in Scheduler: [6]
+Scheduler Finalizado
+next_id obtido 6
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [4 3 2 5]
+c_tid = 1 	 n_tid = 6
+int task_switch [SWAP]
+  400 ms:                     Pung 1 (dorme 0s)
+task_sleep(): tid = 6 	 now: 400 	 sleep_time: 400
+caller id[6] status changed to SLEEPING
+Suspending tid[6] (should be tid[6]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [4 3 2 5 6]
+task_suspend: c_tid = 6 	 n_tid = 1
+TIDs sleeping: [3 2 5 6]
+[TIME: 500] sleep time over for tid[4]->sleep_time[400]
+Appending tid[4] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [3 2 5 6]
+TIDs sleeping: [3 5 6]
+[TIME: 500] sleep time over for tid[2]->sleep_time[500]
+Appending tid[2] to common_user (0x559f857f81e0) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [3 5 6]
+TIDs sleeping: [3 6]
+[TIME: 500] sleep time over for tid[5]->sleep_time[500]
+Appending tid[5] to common_user (0x559f857f81e0) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [3 6]
+TIDs sleeping: [3]
+[TIME: 500] sleep time over for tid[6]->sleep_time[400]
+Appending tid[6] to common_user (0x559f857f81e0) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [3]
+Scheduler Iniciado
+TIDs in Scheduler: [4 2 5 6]
+Scheduler Finalizado
+next_id obtido 4
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [4 2 5 6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [3]
+c_tid = 1 	 n_tid = 4
+int task_switch [SWAP]
+  500 ms:             Ping 2 (dorme 4s)
+task_sleep(): tid = 4 	 now: 500 	 sleep_time: 900
+caller id[4] status changed to SLEEPING
+Suspending tid[4] (should be tid[4]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [3 4]
+task_suspend: c_tid = 4 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [2 5 6]
+Scheduler Finalizado
+next_id obtido 2
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [2 5 6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [3 4]
+c_tid = 1 	 n_tid = 2
+int task_switch [SWAP]
+  500 ms:     Pang 2 (dorme 3s)
+task_sleep(): tid = 2 	 now: 500 	 sleep_time: 800
+caller id[2] status changed to SLEEPING
+Suspending tid[2] (should be tid[2]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [3 4 2]
+task_suspend: c_tid = 2 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [5 6]
+Scheduler Finalizado
+next_id obtido 5
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [5 6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [3 4 2]
+c_tid = 1 	 n_tid = 5
+int task_switch [SWAP]
+  500 ms:                 Pong 4 (dorme 1s)
+task_sleep(): tid = 5 	 now: 500 	 sleep_time: 600
+caller id[5] status changed to SLEEPING
+Suspending tid[5] (should be tid[5]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [3 4 2 5]
+task_suspend: c_tid = 5 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [6]
+Scheduler Finalizado
+next_id obtido 6
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [3 4 2 5]
+c_tid = 1 	 n_tid = 6
+int task_switch [SWAP]
+  500 ms:                     Pung 2 (dorme 0s)
+task_sleep(): tid = 6 	 now: 500 	 sleep_time: 500
+caller id[6] status changed to SLEEPING
+Suspending tid[6] (should be tid[6]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [3 4 2 5 6]
+task_suspend: c_tid = 6 	 n_tid = 1
+TIDs sleeping: [4 2 5 6]
+[TIME: 600] sleep time over for tid[3]->sleep_time[600]
+Appending tid[3] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [4 2 5 6]
+TIDs sleeping: [4 2 6]
+[TIME: 600] sleep time over for tid[5]->sleep_time[600]
+Appending tid[5] to common_user (0x559f857f8300) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [4 2 6]
+TIDs sleeping: [4 2]
+[TIME: 600] sleep time over for tid[6]->sleep_time[500]
+Appending tid[6] to common_user (0x559f857f8300) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [4 2]
+Scheduler Iniciado
+TIDs in Scheduler: [3 5 6]
+Scheduler Finalizado
+next_id obtido 3
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [3 5 6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [4 2]
+c_tid = 1 	 n_tid = 3
+int task_switch [SWAP]
+  600 ms:         Peng 3 (dorme 1s)
+task_sleep(): tid = 3 	 now: 600 	 sleep_time: 700
+caller id[3] status changed to SLEEPING
+Suspending tid[3] (should be tid[3]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [4 2 3]
+task_suspend: c_tid = 3 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [5 6]
+Scheduler Finalizado
+next_id obtido 5
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [5 6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [4 2 3]
+c_tid = 1 	 n_tid = 5
+int task_switch [SWAP]
+  600 ms:                 Pong 5 (dorme 2s)
+task_sleep(): tid = 5 	 now: 600 	 sleep_time: 800
+caller id[5] status changed to SLEEPING
+Suspending tid[5] (should be tid[5]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [4 2 3 5]
+task_suspend: c_tid = 5 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [6]
+Scheduler Finalizado
+next_id obtido 6
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [4 2 3 5]
+c_tid = 1 	 n_tid = 6
+int task_switch [SWAP]
+  600 ms:                     Pung 3 (dorme 1s)
+task_sleep(): tid = 6 	 now: 600 	 sleep_time: 700
+caller id[6] status changed to SLEEPING
+Suspending tid[6] (should be tid[6]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [4 2 3 5 6]
+task_suspend: c_tid = 6 	 n_tid = 1
+TIDs sleeping: [4 2 5 6]
+[TIME: 700] sleep time over for tid[3]->sleep_time[700]
+Appending tid[3] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [4 2 5 6]
+TIDs sleeping: [4 2 5]
+[TIME: 700] sleep time over for tid[6]->sleep_time[700]
+Appending tid[6] to common_user (0x559f857f8300) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [4 2 5]
+Scheduler Iniciado
+TIDs in Scheduler: [3 6]
+Scheduler Finalizado
+next_id obtido 3
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [3 6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [4 2 5]
+c_tid = 1 	 n_tid = 3
+int task_switch [SWAP]
+  700 ms:         Peng 4 (dorme 1s)
+task_sleep(): tid = 3 	 now: 700 	 sleep_time: 800
+caller id[3] status changed to SLEEPING
+Suspending tid[3] (should be tid[3]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [4 2 5 3]
+task_suspend: c_tid = 3 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [6]
+Scheduler Finalizado
+next_id obtido 6
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [4 2 5 3]
+c_tid = 1 	 n_tid = 6
+int task_switch [SWAP]
+  700 ms:                     Pung 4 (dorme 3s)
+task_sleep(): tid = 6 	 now: 700 	 sleep_time: 1000
+caller id[6] status changed to SLEEPING
+Suspending tid[6] (should be tid[6]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [4 2 5 3 6]
+task_suspend: c_tid = 6 	 n_tid = 1
+TIDs sleeping: [4 5 3 6]
+[TIME: 800] sleep time over for tid[2]->sleep_time[800]
+Appending tid[2] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [4 5 3 6]
+TIDs sleeping: [4 3 6]
+[TIME: 800] sleep time over for tid[5]->sleep_time[800]
+Appending tid[5] to common_user (0x559f857f82a0) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [4 3 6]
+TIDs sleeping: [4 6]
+[TIME: 800] sleep time over for tid[3]->sleep_time[800]
+Appending tid[3] to common_user (0x559f857f82a0) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [4 6]
+Scheduler Iniciado
+TIDs in Scheduler: [2 5 3]
+Scheduler Finalizado
+next_id obtido 2
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [2 5 3]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [4 6]
+c_tid = 1 	 n_tid = 2
+int task_switch [SWAP]
+  800 ms:     Pang 3 (dorme 2s)
+task_sleep(): tid = 2 	 now: 800 	 sleep_time: 1000
+caller id[2] status changed to SLEEPING
+Suspending tid[2] (should be tid[2]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [4 6 2]
+task_suspend: c_tid = 2 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [5 3]
+Scheduler Finalizado
+next_id obtido 5
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [5 3]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [4 6 2]
+c_tid = 1 	 n_tid = 5
+int task_switch [SWAP]
+  800 ms:                 Pong 6 (dorme 4s)
+task_sleep(): tid = 5 	 now: 800 	 sleep_time: 1200
+caller id[5] status changed to SLEEPING
+Suspending tid[5] (should be tid[5]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [4 6 2 5]
+task_suspend: c_tid = 5 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [3]
+Scheduler Finalizado
+next_id obtido 3
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [3]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [4 6 2 5]
+c_tid = 1 	 n_tid = 3
+int task_switch [SWAP]
+  800 ms:         Peng 5 (dorme 2s)
+task_sleep(): tid = 3 	 now: 800 	 sleep_time: 1000
+caller id[3] status changed to SLEEPING
+Suspending tid[3] (should be tid[3]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [4 6 2 5 3]
+task_suspend: c_tid = 3 	 n_tid = 1
+TIDs sleeping: [6 2 5 3]
+[TIME: 900] sleep time over for tid[4]->sleep_time[900]
+Appending tid[4] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [6 2 5 3]
+Scheduler Iniciado
+TIDs in Scheduler: [4]
+Scheduler Finalizado
+next_id obtido 4
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [6 2 5 3]
+c_tid = 1 	 n_tid = 4
+int task_switch [SWAP]
+  900 ms:             Ping 3 (dorme 0s)
+task_sleep(): tid = 4 	 now: 900 	 sleep_time: 900
+caller id[4] status changed to SLEEPING
+Suspending tid[4] (should be tid[4]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [6 2 5 3 4]
+task_suspend: c_tid = 4 	 n_tid = 1
+TIDs sleeping: [2 5 3 4]
+[TIME: 1000] sleep time over for tid[6]->sleep_time[1000]
+Appending tid[6] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 5 3 4]
+TIDs sleeping: [2 5 4]
+[TIME: 1000] sleep time over for tid[3]->sleep_time[1000]
+Appending tid[3] to common_user (0x559f857f8240) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 5 4]
+TIDs sleeping: [2 5]
+[TIME: 1000] sleep time over for tid[4]->sleep_time[900]
+Appending tid[4] to common_user (0x559f857f8240) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 5]
+Scheduler Iniciado
+TIDs in Scheduler: [6 3 4]
+Scheduler Finalizado
+next_id obtido 6
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [6 3 4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 5]
+c_tid = 1 	 n_tid = 6
+int task_switch [SWAP]
+ 1000 ms:                     Pung 5 (dorme 2s)
+task_sleep(): tid = 6 	 now: 1000 	 sleep_time: 1200
+caller id[6] status changed to SLEEPING
+Suspending tid[6] (should be tid[6]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 5 6]
+task_suspend: c_tid = 6 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [3 4]
+Scheduler Finalizado
+next_id obtido 3
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [3 4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 5 6]
+c_tid = 1 	 n_tid = 3
+int task_switch [SWAP]
+ 1000 ms:         Peng 6 (dorme 3s)
+task_sleep(): tid = 3 	 now: 1000 	 sleep_time: 1300
+caller id[3] status changed to SLEEPING
+Suspending tid[3] (should be tid[3]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 5 6 3]
+task_suspend: c_tid = 3 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [4]
+Scheduler Finalizado
+next_id obtido 4
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 5 6 3]
+c_tid = 1 	 n_tid = 4
+int task_switch [SWAP]
+ 1000 ms:             Ping 4 (dorme 2s)
+task_sleep(): tid = 4 	 now: 1000 	 sleep_time: 1200
+caller id[4] status changed to SLEEPING
+Suspending tid[4] (should be tid[4]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 5 6 3 4]
+task_suspend: c_tid = 4 	 n_tid = 1
+TIDs sleeping: [5 6 3 4]
+[TIME: 1100] sleep time over for tid[2]->sleep_time[1000]
+Appending tid[2] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [5 6 3 4]
+Scheduler Iniciado
+TIDs in Scheduler: [2]
+Scheduler Finalizado
+next_id obtido 2
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [2]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [5 6 3 4]
+c_tid = 1 	 n_tid = 2
+int task_switch [SWAP]
+ 1100 ms:     Pang 4 (dorme 0s)
+task_sleep(): tid = 2 	 now: 1100 	 sleep_time: 1100
+caller id[2] status changed to SLEEPING
+Suspending tid[2] (should be tid[2]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [5 6 3 4 2]
+task_suspend: c_tid = 2 	 n_tid = 1
+TIDs sleeping: [6 3 4 2]
+[TIME: 1200] sleep time over for tid[5]->sleep_time[1200]
+Appending tid[5] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [6 3 4 2]
+TIDs sleeping: [6 3 2]
+[TIME: 1200] sleep time over for tid[4]->sleep_time[1200]
+Appending tid[4] to common_user (0x559f857f8360) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [6 3 2]
+TIDs sleeping: [6 3]
+[TIME: 1200] sleep time over for tid[2]->sleep_time[1100]
+Appending tid[2] to common_user (0x559f857f8360) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [6 3]
+Scheduler Iniciado
+TIDs in Scheduler: [5 4 2]
+Scheduler Finalizado
+next_id obtido 5
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [5 4 2]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [6 3]
+c_tid = 1 	 n_tid = 5
+int task_switch [SWAP]
+ 1200 ms:                 Pong 7 (dorme 4s)
+task_sleep(): tid = 5 	 now: 1200 	 sleep_time: 1600
+caller id[5] status changed to SLEEPING
+Suspending tid[5] (should be tid[5]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [6 3 5]
+task_suspend: c_tid = 5 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [4 2]
+Scheduler Finalizado
+next_id obtido 4
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [4 2]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [6 3 5]
+c_tid = 1 	 n_tid = 4
+int task_switch [SWAP]
+ 1200 ms:             Ping 5 (dorme 2s)
+task_sleep(): tid = 4 	 now: 1200 	 sleep_time: 1400
+caller id[4] status changed to SLEEPING
+Suspending tid[4] (should be tid[4]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [6 3 5 4]
+task_suspend: c_tid = 4 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [2]
+Scheduler Finalizado
+next_id obtido 2
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [2]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [6 3 5 4]
+c_tid = 1 	 n_tid = 2
+int task_switch [SWAP]
+ 1200 ms:     Pang 5 (dorme 2s)
+task_sleep(): tid = 2 	 now: 1200 	 sleep_time: 1400
+caller id[2] status changed to SLEEPING
+Suspending tid[2] (should be tid[2]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [6 3 5 4 2]
+task_suspend: c_tid = 2 	 n_tid = 1
+TIDs sleeping: [3 5 4 2]
+[TIME: 1300] sleep time over for tid[6]->sleep_time[1200]
+Appending tid[6] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [3 5 4 2]
+Scheduler Iniciado
+TIDs in Scheduler: [6]
+Scheduler Finalizado
+next_id obtido 6
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [3 5 4 2]
+c_tid = 1 	 n_tid = 6
+int task_switch [SWAP]
+ 1300 ms:                     Pung 6 (dorme 3s)
+task_sleep(): tid = 6 	 now: 1300 	 sleep_time: 1600
+caller id[6] status changed to SLEEPING
+Suspending tid[6] (should be tid[6]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [3 5 4 2 6]
+task_suspend: c_tid = 6 	 n_tid = 1
+TIDs sleeping: [5 4 2 6]
+[TIME: 1400] sleep time over for tid[3]->sleep_time[1300]
+Appending tid[3] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [5 4 2 6]
+TIDs sleeping: [5 2 6]
+[TIME: 1400] sleep time over for tid[4]->sleep_time[1400]
+Appending tid[4] to common_user (0x559f857f8300) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [5 2 6]
+TIDs sleeping: [5 6]
+[TIME: 1400] sleep time over for tid[2]->sleep_time[1400]
+Appending tid[2] to common_user (0x559f857f8300) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [5 6]
+Scheduler Iniciado
+TIDs in Scheduler: [3 4 2]
+Scheduler Finalizado
+next_id obtido 3
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [3 4 2]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [5 6]
+c_tid = 1 	 n_tid = 3
+int task_switch [SWAP]
+ 1400 ms:         Peng 7 (dorme 4s)
+task_sleep(): tid = 3 	 now: 1400 	 sleep_time: 1800
+caller id[3] status changed to SLEEPING
+Suspending tid[3] (should be tid[3]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [5 6 3]
+task_suspend: c_tid = 3 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [4 2]
+Scheduler Finalizado
+next_id obtido 4
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [4 2]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [5 6 3]
+c_tid = 1 	 n_tid = 4
+int task_switch [SWAP]
+ 1400 ms:             Ping 6 (dorme 2s)
+task_sleep(): tid = 4 	 now: 1400 	 sleep_time: 1600
+caller id[4] status changed to SLEEPING
+Suspending tid[4] (should be tid[4]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [5 6 3 4]
+task_suspend: c_tid = 4 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [2]
+Scheduler Finalizado
+next_id obtido 2
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [2]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [5 6 3 4]
+c_tid = 1 	 n_tid = 2
+int task_switch [SWAP]
+ 1400 ms:     Pang 6 (dorme 3s)
+task_sleep(): tid = 2 	 now: 1400 	 sleep_time: 1700
+caller id[2] status changed to SLEEPING
+Suspending tid[2] (should be tid[2]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [5 6 3 4 2]
+task_suspend: c_tid = 2 	 n_tid = 1
+TIDs sleeping: [6 3 4 2]
+[TIME: 1600] sleep time over for tid[5]->sleep_time[1600]
+Appending tid[5] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [6 3 4 2]
+TIDs sleeping: [6 3 2]
+[TIME: 1600] sleep time over for tid[4]->sleep_time[1600]
+Appending tid[4] to common_user (0x559f857f8360) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [6 3 2]
+Scheduler Iniciado
+TIDs in Scheduler: [5 4]
+Scheduler Finalizado
+next_id obtido 5
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [5 4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [6 3 2]
+c_tid = 1 	 n_tid = 5
+int task_switch [SWAP]
+ 1600 ms:                 Pong 8 (dorme 1s)
+task_sleep(): tid = 5 	 now: 1600 	 sleep_time: 1700
+caller id[5] status changed to SLEEPING
+Suspending tid[5] (should be tid[5]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [6 3 2 5]
+task_suspend: c_tid = 5 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [4]
+Scheduler Finalizado
+next_id obtido 4
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [6 3 2 5]
+c_tid = 1 	 n_tid = 4
+int task_switch [SWAP]
+ 1600 ms:             Ping 7 (dorme 1s)
+task_sleep(): tid = 4 	 now: 1600 	 sleep_time: 1700
+caller id[4] status changed to SLEEPING
+Suspending tid[4] (should be tid[4]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [6 3 2 5 4]
+task_suspend: c_tid = 4 	 n_tid = 1
+TIDs sleeping: [3 2 5 4]
+[TIME: 1700] sleep time over for tid[6]->sleep_time[1600]
+Appending tid[6] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [3 2 5 4]
+TIDs sleeping: [3 5 4]
+[TIME: 1700] sleep time over for tid[2]->sleep_time[1700]
+Appending tid[2] to common_user (0x559f857f8240) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [3 5 4]
+TIDs sleeping: [3 4]
+[TIME: 1700] sleep time over for tid[5]->sleep_time[1700]
+Appending tid[5] to common_user (0x559f857f8240) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [3 4]
+TIDs sleeping: [3]
+[TIME: 1700] sleep time over for tid[4]->sleep_time[1700]
+Appending tid[4] to common_user (0x559f857f8240) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [3]
+Scheduler Iniciado
+TIDs in Scheduler: [6 2 5 4]
+Scheduler Finalizado
+next_id obtido 6
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [6 2 5 4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [3]
+c_tid = 1 	 n_tid = 6
+int task_switch [SWAP]
+ 1700 ms:                     Pung 7 (dorme 2s)
+task_sleep(): tid = 6 	 now: 1700 	 sleep_time: 1900
+caller id[6] status changed to SLEEPING
+Suspending tid[6] (should be tid[6]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [3 6]
+task_suspend: c_tid = 6 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [2 5 4]
+Scheduler Finalizado
+next_id obtido 2
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [2 5 4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [3 6]
+c_tid = 1 	 n_tid = 2
+int task_switch [SWAP]
+ 1700 ms:     Pang 7 (dorme 4s)
+task_sleep(): tid = 2 	 now: 1700 	 sleep_time: 2100
+caller id[2] status changed to SLEEPING
+Suspending tid[2] (should be tid[2]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [3 6 2]
+task_suspend: c_tid = 2 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [5 4]
+Scheduler Finalizado
+next_id obtido 5
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [5 4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [3 6 2]
+c_tid = 1 	 n_tid = 5
+int task_switch [SWAP]
+ 1700 ms:                 Pong 9 (dorme 3s)
+task_sleep(): tid = 5 	 now: 1700 	 sleep_time: 2000
+caller id[5] status changed to SLEEPING
+Suspending tid[5] (should be tid[5]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [3 6 2 5]
+task_suspend: c_tid = 5 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [4]
+Scheduler Finalizado
+next_id obtido 4
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [3 6 2 5]
+c_tid = 1 	 n_tid = 4
+int task_switch [SWAP]
+ 1700 ms:             Ping 8 (dorme 1s)
+task_sleep(): tid = 4 	 now: 1700 	 sleep_time: 1800
+caller id[4] status changed to SLEEPING
+Suspending tid[4] (should be tid[4]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [3 6 2 5 4]
+task_suspend: c_tid = 4 	 n_tid = 1
+TIDs sleeping: [6 2 5 4]
+[TIME: 1800] sleep time over for tid[3]->sleep_time[1800]
+Appending tid[3] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [6 2 5 4]
+TIDs sleeping: [6 2 5]
+[TIME: 1800] sleep time over for tid[4]->sleep_time[1800]
+Appending tid[4] to common_user (0x559f857f8300) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [6 2 5]
+Scheduler Iniciado
+TIDs in Scheduler: [3 4]
+Scheduler Finalizado
+next_id obtido 3
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [3 4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [6 2 5]
+c_tid = 1 	 n_tid = 3
+int task_switch [SWAP]
+ 1800 ms:         Peng 8 (dorme 4s)
+task_sleep(): tid = 3 	 now: 1800 	 sleep_time: 2200
+caller id[3] status changed to SLEEPING
+Suspending tid[3] (should be tid[3]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [6 2 5 3]
+task_suspend: c_tid = 3 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [4]
+Scheduler Finalizado
+next_id obtido 4
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [4]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [6 2 5 3]
+c_tid = 1 	 n_tid = 4
+int task_switch [SWAP]
+ 1800 ms:             Ping 9 (dorme 4s)
+task_sleep(): tid = 4 	 now: 1800 	 sleep_time: 2200
+caller id[4] status changed to SLEEPING
+Suspending tid[4] (should be tid[4]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [6 2 5 3 4]
+task_suspend: c_tid = 4 	 n_tid = 1
+TIDs sleeping: [2 5 3 4]
+[TIME: 1900] sleep time over for tid[6]->sleep_time[1900]
+Appending tid[6] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 5 3 4]
+Scheduler Iniciado
+TIDs in Scheduler: [6]
+Scheduler Finalizado
+next_id obtido 6
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 5 3 4]
+c_tid = 1 	 n_tid = 6
+int task_switch [SWAP]
+ 1900 ms:                     Pung 8 (dorme 2s)
+task_sleep(): tid = 6 	 now: 1900 	 sleep_time: 2100
+caller id[6] status changed to SLEEPING
+Suspending tid[6] (should be tid[6]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [2 5 3 4 6]
+task_suspend: c_tid = 6 	 n_tid = 1
+TIDs sleeping: [2 3 4 6]
+[TIME: 2000] sleep time over for tid[5]->sleep_time[2000]
+Appending tid[5] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 3 4 6]
+Scheduler Iniciado
+TIDs in Scheduler: [5]
+Scheduler Finalizado
+next_id obtido 5
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [5]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 3 4 6]
+c_tid = 1 	 n_tid = 5
+int task_switch [SWAP]
+ 2000 ms:                 Pong FIM
+void task_exit (int exitCode) [START]
+Finishing TID[5]	DEPENDENTS: []
+Remaining task in SUSPENDED list
+TID[0] -> dependency[2]
+No one to wake
+Task 5 exit: execution time 2000 ms, processor time 0 ms, 0 activations
+[task_exit()]	root TID: [1]
+[task_exit()]	user TID: []
+[task_exit()]	susp TID: [0]
+TIDs sleeping: [2 3 4 6]
+void task_exit (int exitCode) [Trying to return to DISP]
+TIDs sleeping: [3 4 6]
+[TIME: 2100] sleep time over for tid[2]->sleep_time[2100]
+Appending tid[2] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [3 4 6]
+TIDs sleeping: [3 4]
+[TIME: 2100] sleep time over for tid[6]->sleep_time[2100]
+Appending tid[6] to common_user (0x559f857f82a0) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [3 4]
+Scheduler Iniciado
+TIDs in Scheduler: [2 6]
+Scheduler Finalizado
+next_id obtido 2
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [2 6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [3 4]
+c_tid = 1 	 n_tid = 2
+int task_switch [SWAP]
+ 2100 ms:     Pang 8 (dorme 3s)
+task_sleep(): tid = 2 	 now: 2100 	 sleep_time: 2400
+caller id[2] status changed to SLEEPING
+Suspending tid[2] (should be tid[2]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [3 4 2]
+task_suspend: c_tid = 2 	 n_tid = 1
+Scheduler Iniciado
+TIDs in Scheduler: [6]
+Scheduler Finalizado
+next_id obtido 6
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [6]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [3 4 2]
+c_tid = 1 	 n_tid = 6
+int task_switch [SWAP]
+ 2100 ms:                     Pung 9 (dorme 4s)
+task_sleep(): tid = 6 	 now: 2100 	 sleep_time: 2500
+caller id[6] status changed to SLEEPING
+Suspending tid[6] (should be tid[6]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [3 4 2 6]
+task_suspend: c_tid = 6 	 n_tid = 1
+TIDs sleeping: [4 2 6]
+[TIME: 2200] sleep time over for tid[3]->sleep_time[2200]
+Appending tid[3] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [4 2 6]
+Scheduler Iniciado
+TIDs in Scheduler: [3]
+Scheduler Finalizado
+next_id obtido 3
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [3]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [4 2 6]
+c_tid = 1 	 n_tid = 3
+int task_switch [SWAP]
+ 2200 ms:         Peng 9 (dorme 0s)
+task_sleep(): tid = 3 	 now: 2200 	 sleep_time: 2200
+caller id[3] status changed to SLEEPING
+Suspending tid[3] (should be tid[3]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [4 2 6 3]
+task_suspend: c_tid = 3 	 n_tid = 1
+TIDs sleeping: [2 6 3]
+[TIME: 2300] sleep time over for tid[4]->sleep_time[2200]
+Appending tid[4] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 6 3]
+TIDs sleeping: [2 6]
+[TIME: 2300] sleep time over for tid[3]->sleep_time[2200]
+Appending tid[3] to common_user (0x559f857f81e0) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2 6]
+Scheduler Iniciado
+TIDs in Scheduler: [4 3]
+Scheduler Finalizado
+next_id obtido 4
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [4 3]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 6]
+c_tid = 1 	 n_tid = 4
+int task_switch [SWAP]
+ 2300 ms:             Ping FIM
+void task_exit (int exitCode) [START]
+Finishing TID[4]	DEPENDENTS: []
+Remaining task in SUSPENDED list
+TID[0] -> dependency[2]
+No one to wake
+Task 4 exit: execution time 2300 ms, processor time 0 ms, 0 activations
+[task_exit()]	root TID: [1]
+[task_exit()]	user TID: [3]
+[task_exit()]	susp TID: [0]
+TIDs sleeping: [2 6]
+void task_exit (int exitCode) [Trying to return to DISP]
+Scheduler Iniciado
+TIDs in Scheduler: [3]
+Scheduler Finalizado
+next_id obtido 3
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [3]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [2 6]
+c_tid = 1 	 n_tid = 3
+int task_switch [SWAP]
+ 2300 ms:         Peng FIM
+void task_exit (int exitCode) [START]
+Finishing TID[3]	DEPENDENTS: []
+Remaining task in SUSPENDED list
+TID[0] -> dependency[2]
+No one to wake
+Task 3 exit: execution time 2300 ms, processor time 0 ms, 0 activations
+[task_exit()]	root TID: [1]
+[task_exit()]	user TID: []
+[task_exit()]	susp TID: [0]
+TIDs sleeping: [2 6]
+void task_exit (int exitCode) [Trying to return to DISP]
+TIDs sleeping: [6]
+[TIME: 2400] sleep time over for tid[2]->sleep_time[2400]
+Appending tid[2] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [6]
+Scheduler Iniciado
+TIDs in Scheduler: [2]
+Scheduler Finalizado
+next_id obtido 2
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [2]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: [6]
+c_tid = 1 	 n_tid = 2
+int task_switch [SWAP]
+ 2400 ms:     Pang 9 (dorme 0s)
+task_sleep(): tid = 2 	 now: 2400 	 sleep_time: 2400
+caller id[2] status changed to SLEEPING
+Suspending tid[2] (should be tid[2]) to queue_adress: 0x559f857f81c8
+TIDs suspended in this queue: [6 2]
+task_suspend: c_tid = 2 	 n_tid = 1
+TIDs sleeping: [2]
+[TIME: 2500] sleep time over for tid[6]->sleep_time[2500]
+Appending tid[6] to common_user ((nil)) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: [2]
+TIDs sleeping: []
+[TIME: 2500] sleep time over for tid[2]->sleep_time[2400]
+Appending tid[2] to common_user (0x559f857f8240) from sleeping_tasks (0x559f857f81c8)
+TIDs sleeping [it copy]: []
+Scheduler Iniciado
+TIDs in Scheduler: [6 2]
+Scheduler Finalizado
+next_id obtido 6
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [6 2]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: []
+c_tid = 1 	 n_tid = 6
+int task_switch [SWAP]
+ 2500 ms:                     Pung FIM
+void task_exit (int exitCode) [START]
+Finishing TID[6]	DEPENDENTS: []
+Remaining task in SUSPENDED list
+TID[0] -> dependency[2]
+No one to wake
+Task 6 exit: execution time 2500 ms, processor time 0 ms, 0 activations
+[task_exit()]	root TID: [1]
+[task_exit()]	user TID: [2]
+[task_exit()]	susp TID: [0]
+TIDs sleeping: []
+void task_exit (int exitCode) [Trying to return to DISP]
+Scheduler Iniciado
+TIDs in Scheduler: [2]
+Scheduler Finalizado
+next_id obtido 2
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [2]
+[task_switch()]	susp TID: [0]
+[task_switch()]	slep TID: []
+c_tid = 1 	 n_tid = 2
+int task_switch [SWAP]
+ 2500 ms:     Pang FIM
+void task_exit (int exitCode) [START]
+Finishing TID[2]	DEPENDENTS: [0]
+Remaining task in SUSPENDED list
+TID[0] -> dependency[2]
+task_wake(): Exists an dependent task, waking it...
+[task_wake()]	susp TID: [0]
+task_resume: START
+TIDs left on the list: []
+Appending tid[0] to common_user (0x559f857f8098) from list (0x559f857f81c0)
+Task 0 woke
+task_wake(): finalizado
+Task 2 exit: execution time 2500 ms, processor time 0 ms, 0 activations
+[task_exit()]	root TID: [1]
+[task_exit()]	user TID: [0]
+[task_exit()]	susp TID: []
+TIDs sleeping: []
+void task_exit (int exitCode) [Trying to return to DISP]
+Scheduler Iniciado
+TIDs in Scheduler: [0]
+Scheduler Finalizado
+next_id obtido 0
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [0]
+[task_switch()]	susp TID: []
+[task_switch()]	slep TID: []
+c_tid = 1 	 n_tid = 0
+int task_switch [SWAP]
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [0]
+[task_switch()]	susp TID: []
+[task_switch()]	slep TID: []
+c_tid = 0 	 n_tid = 1
+int task_switch [SWAP]
+Scheduler Iniciado
+TIDs in Scheduler: [0]
+Scheduler Finalizado
+next_id obtido 0
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: [0]
+[task_switch()]	susp TID: []
+[task_switch()]	slep TID: []
+c_tid = 1 	 n_tid = 0
+int task_switch [SWAP]
+ 2500 ms: Pang acabou
+ 2500 ms: Main espera Peng...
+task_join: tried to join an invalid task, returning
+ 2500 ms: Peng acabou
+ 2500 ms: Main espera Ping...
+task_join: tried to join an invalid task, returning
+ 2500 ms: Ping acabou
+ 2500 ms: Main espera Pong...
+task_join: tried to join an invalid task, returning
+ 2500 ms: Pong acabou
+ 2500 ms: Main espera Pung...
+task_join: tried to join an invalid task, returning
+ 2500 ms: Pung acabou
+ 2500 ms: Main FIM
+void task_exit (int exitCode) [START]
+Finishing TID[0]	DEPENDENTS: []
+Remaining task in SUSPENDED list
+No one to wake
+Task 0 exit: execution time 2500 ms, processor time 0 ms, 0 activations
+[task_exit()]	root TID: [1]
+[task_exit()]	user TID: []
+[task_exit()]	susp TID: []
+TIDs sleeping: []
+void task_exit (int exitCode) [Trying to return to DISP]
+Task 1 exit: execution time 2500 ms, processor time 2500 ms, 176 activations
+int task_switch (task_t *n_task) START
+[task_switch()]	root TID: [1]
+[task_switch()]	user TID: []
+[task_switch()]	susp TID: []
+[task_switch()]	slep TID: []
+c_tid = 1 	 n_tid = 0
+int task_switch [SWAP]

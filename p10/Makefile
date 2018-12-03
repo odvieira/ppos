@@ -12,8 +12,9 @@ RM = rm -rf
 
 # Build
 build:
-	@$(CC) $(SRC) $(addprefix ../lib_unstable/, $(INCL)) -o $(OUT);
-	@$(CC) pingpong-racecond.c $(addprefix ../lib_unstable/, $(INCL)) -o $(OUT)_race;
+	@$(CC) $(SRC) $(addprefix ./lib10_1/, $(INCL)) -o $(OUT);
+	@$(CC) pingpong-racecond.c $(addprefix ./lib10_1/, $(INCL)) -o $(OUT)_race;
+	@$(CC) pingpong-prodcons.c $(addprefix ./lib10_1/, $(INCL)) -o $(OUT)_prodcons;
 
 # Clean Up Objects, Executables, dumps out of source directory
 clean:

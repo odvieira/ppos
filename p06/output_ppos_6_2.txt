@@ -4,15 +4,15 @@ Main INICIO
             Ping INICIO em   84 ms (prio: -4)
         Peng INICIO em  147 ms (prio: -2)
     Pang INICIO em  189 ms (prio: 0)
-                    Pung FIM    em 9266 ms
-Task 6 exit: execution time 9265 ms, processor time 3460 ms, 173 activations
-                Pong FIM    em 12787 ms
-Task 5 exit: execution time 12786 ms, processor time 3480 ms, 174 activations
-            Ping FIM    em 15177 ms
-Task 4 exit: execution time 15176 ms, processor time 3540 ms, 177 activations
-        Peng FIM    em 17365 ms
-Task 3 exit: execution time 17364 ms, processor time 3540 ms, 177 activations
-    Pang FIM    em 18480 ms
-Task 2 exit: execution time 18479 ms, processor time 3580 ms, 179 activations
-Task 1 exit: execution time 18479 ms, processor time 0 ms, 885 activations
+                    Pung FIM    em 9141 ms
+Task 6 exit: execution time 9140 ms, processor time 3400 ms, 170 activations
+                Pong FIM    em 12538 ms
+Task 5 exit: execution time 12537 ms, processor time 3420 ms, 171 activations
+            Ping FIM    em 14779 ms
+Task 4 exit: execution time 14778 ms, processor time 3400 ms, 170 activations
+        Peng FIM    em 16858 ms
+Task 3 exit: execution time 16857 ms, processor time 3400 ms, 170 activations
+    Pang FIM    em 17878 ms
+Task 2 exit: execution time 17877 ms, processor time 3400 ms, 170 activations
+Task 1 exit: execution time 17877 ms, processor time 0 ms, 856 activations
 Main FIM

@@ -12,7 +12,7 @@ RM = rm -rf
 
 # Build
 build:
-	@$(CC) $(SRC) $(addprefix ../lib_unstable/, $(INCL)) -lm -o $(OUT);
+	@$(CC) $(SRC) $(addprefix ./lib_unstable/, $(INCL)) -lm -o $(OUT);
 
 # Clean Up Objects, Executables, dumps out of source directory
 clean:

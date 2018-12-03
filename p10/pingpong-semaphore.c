@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../lib_unstable/pingpong.h"
+#include "lib10_1/pingpong.h"
 
 task_t      a1, a2, b1, b2;
 semaphore_t s1, s2 ;
